@@ -1,0 +1,60 @@
+@import '../../../../style/colors';
+@import '../../../../style/fonts';
+
+.header-wrapper {
+  font-family: 'Raleway', sans-serif;
+
+  background-color: $main-color;
+  color: $main-text-color;
+  height: 80px;
+
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+  padding-left: 70px;
+  padding-right: 70px;
+
+  /*border: 2px solid red;*/
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  justify-content: space-between;
+}
+
+.header-wrapper .header-links ul {
+  list-style: none;
+  display: flex;
+  column-gap: 20px;
+}
+
+.header-wrapper .header-links ul > li {
+  text-transform: uppercase;
+  font-weight: map-get($font-weights, regular);
+  font-size: 16px;
+  line-height: 120%;
+}
+
+.header-wrapper .header-currency-cart {
+  display: flex;
+  align-items: flex-end;
+  column-gap: 35px;
+}
+
+.header-wrapper .header-currency-cart .currencies {
+  font-size: 18px;
+  line-height: 160%;
+  font-weight: map-get($font-weights, medium);
+
+  position: relative;
+}
+
+.currencies svg {
+  position: absolute;
+  top: 15px;
+  left: 18px;
+}

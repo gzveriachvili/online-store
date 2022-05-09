@@ -1,6 +1,8 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import ProductsList from './components/ProductsList';
 import './style/App.scss';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Link, Route, Switch } from 'react-router-dom';
+import ProductsList from './components/ProductsList';
+import Header from './components/Utils/Header/Header';
 
 // Apollo client setup
 const client = new ApolloClient({
@@ -12,7 +14,8 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className='App'>
-        <h1>Query Test</h1>
+        <Header />
+
         <ProductsList />
       </div>
     </ApolloProvider>
