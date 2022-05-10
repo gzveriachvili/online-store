@@ -1,24 +1,19 @@
 import './style/App.scss';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { Link, Route, Switch } from 'react-router-dom';
-import ProductsList from './components/ProductsList';
+import { Route, Routes } from 'react-router-dom';
+import CategoryPage from './components/CategoryPage/CategoryPage';
 import Header from './components/Utils/Header/Header';
-
-// Apollo client setup
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: new InMemoryCache(),
-});
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <div className='App'>
-        <Header />
-
-        <ProductsList />
-      </div>
-    </ApolloProvider>
+    <div className='App'>
+      <Header />
+      <Routes>
+        <Route index element={<CategoryPage category='0' />} />
+        <Route path='/all' element={<CategoryPage category='0' />} />
+        <Route path='/clothes' element={<CategoryPage category='1' />} />
+        <Route path='/tech' element={<CategoryPage category='2' />} />
+      </Routes>
+    </div>
   );
 }
 

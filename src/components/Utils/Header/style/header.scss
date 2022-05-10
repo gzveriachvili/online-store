@@ -32,11 +32,13 @@
   column-gap: 20px;
 }
 
-.header-wrapper .header-links ul > li {
+.header-wrapper .header-links ul > li a {
   text-transform: uppercase;
   font-weight: map-get($font-weights, regular);
   font-size: 16px;
   line-height: 120%;
+  color: $main-text-color;
+  text-decoration: none;
 }
 
 .header-wrapper .header-currency-cart {
