@@ -16,13 +16,8 @@
   padding-left: 70px;
   padding-right: 70px;
 
-  /*border: 2px solid red;*/
-
   display: flex;
-
   align-items: center;
-  justify-content: center;
-
   justify-content: space-between;
 }
 
@@ -39,6 +34,12 @@
   line-height: 120%;
   color: $main-text-color;
   text-decoration: none;
+
+  padding-bottom: 25px;
+}
+
+.active {
+  border-bottom: 3px solid $accent-color;
 }
 
 .header-wrapper .header-currency-cart {

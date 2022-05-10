@@ -3,6 +3,7 @@ import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
 
 class CategoryPage extends Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
   }
