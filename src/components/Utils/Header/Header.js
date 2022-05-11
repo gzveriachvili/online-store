@@ -16,7 +16,6 @@ class Header extends Component {
           <li key={category.name}>
             <NavLink
               activeClassName='active'
-              className={'tab'}
               id={category.name}
               to={`/${category.name}`}
             >

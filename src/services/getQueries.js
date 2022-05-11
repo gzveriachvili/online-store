@@ -41,6 +41,10 @@ const getAllCategories = gql`
     categories {
       name
     }
+
+    currencies {
+      symbol
+    }
   }
 `;
 

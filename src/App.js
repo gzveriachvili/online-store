@@ -1,7 +1,7 @@
 import './style/App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import CategoryPage from './components/CategoryPage/CategoryPage';
-import ErrorPage from './components/ErrorPage/ErrorPage';
+import ErrorPage from './components/Utils/ErrorPage/ErrorPage';
 import Header from './components/Utils/Header/Header';
 
 function App() {
