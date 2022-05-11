@@ -9,10 +9,22 @@ function App() {
     <div className='App'>
       <Header />
       <Routes>
-        <Route path='/' element={<Navigate to='/all' />} />
-        <Route path='/all' element={<CategoryPage category='0' />} />
-        <Route path='/clothes' element={<CategoryPage category='1' />} />
-        <Route path='/tech' element={<CategoryPage category='2' />} />
+        <Route
+          path='/sw-erd-test'
+          element={<Navigate to='/sw-erd-test/all' />}
+        />
+        <Route
+          path='/sw-erd-test/all'
+          element={<CategoryPage category='0' />}
+        />
+        <Route
+          path='/sw-erd-test/clothes'
+          element={<CategoryPage category='1' />}
+        />
+        <Route
+          path='/sw-erd-test/tech'
+          element={<CategoryPage category='2' />}
+        />
         <Route path='*' element={<ErrorPage />} />
       </Routes>
     </div>

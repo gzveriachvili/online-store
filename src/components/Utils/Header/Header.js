@@ -17,7 +17,7 @@ class Header extends Component {
             <NavLink
               activeClassName='active'
               id={category.name}
-              to={`/${category.name}`}
+              to={`/sw-erd-test/${category.name}`}
             >
               {category.name}
             </NavLink>
@@ -34,7 +34,7 @@ class Header extends Component {
           <ul>{this.displayCategories()}</ul>
         </div>
         <div className='header-logo'>
-          <Link to='/all'>
+          <Link to='/sw-erd-test/all'>
             <svg
               width='33'
               height='31'
