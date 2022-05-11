@@ -10,6 +10,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Navigate to='/all' />} />
+        <Route path='/sw-erd-test' element={<Navigate to='/all' />} />
         <Route path='/all' element={<CategoryPage category='0' />} />
         <Route path='/clothes' element={<CategoryPage category='1' />} />
         <Route path='/tech' element={<CategoryPage category='2' />} />
