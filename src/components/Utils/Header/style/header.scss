@@ -8,11 +8,10 @@
   color: $main-text-color;
   height: 80px;
 
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 0%;
-  bottom: 0%;
+  position: sticky;
+  top: 0;
+  width: 100%;
+
   padding-left: 70px;
   padding-right: 70px;
 
@@ -54,10 +53,4 @@
   font-weight: map-get($font-weights, medium);
 
   position: relative;
-}
-
-.currencies svg {
-  position: absolute;
-  top: 15px;
-  left: 18px;
 }

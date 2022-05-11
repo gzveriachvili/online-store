@@ -1,0 +1,9 @@
+@import '../../../../../../style/colors';
+@import '../../../../../../style/fonts';
+
+.currency-dropdown select {
+  font-family: 'Raleway', sans-serif;
+  font-weight: map-get($font-weights, medium);
+  font-size: 18px;
+  color: $main-text-color;
+}

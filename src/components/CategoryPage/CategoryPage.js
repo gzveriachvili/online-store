@@ -26,8 +26,8 @@ class CategoryPage extends Component {
             <h4>In Stock: </h4>
             {item.inStock}
             <h4>Price: </h4>
-            {item.prices[0].currency.symbol}
-            {item.prices[0].amount}
+            {item.prices[this.props.currency].currency.symbol}
+            {item.prices[this.props.currency].amount}
             <h4>Attribute: </h4>
             {item.attributes.map((atr) => {
               return (

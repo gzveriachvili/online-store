@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllCategories } from '../../../services/getQueries';
+import Dropdown from './utils/Dropdown/Dropdown';
 import './style/header.scss';
 
 class Header extends Component {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(props) {
+    super(props);
+  }
+
   displayCategories() {
     const data = this.props.data;
 
     if (data.loading) {
-      return <div>Loading...</div>;
+      return <div>Loading categories</div>;
     } else {
       return data.categories.map((category) => {
         return (
@@ -22,6 +28,34 @@ class Header extends Component {
               {category.name}
             </NavLink>
           </li>
+        );
+      });
+    }
+  }
+
+  displayCurrencySymbols() {
+    const data = this.props.data;
+
+    if (data.loading) {
+      return <div>Loading currency symbols</div>;
+    } else {
+      return data.currencies.map((currency) => {
+        const currencyISO = {
+          $: 'USD',
+          '£': 'GBP',
+          A$: 'AUD',
+          '¥': 'YEN',
+          '₽': 'RUB',
+        };
+
+        return (
+          <option
+            value={currencyISO[currency.symbol]}
+            id={'currency_' + currency.symbol}
+          >
+            {currency.symbol}&nbsp;
+            {currencyISO[currency.symbol]}
+          </option>
         );
       });
     }
@@ -76,21 +110,7 @@ class Header extends Component {
         </div>
         <div className='header-currency-cart'>
           <div className='currencies'>
-            <p>$</p>
-            <svg
-              width='8'
-              height='4'
-              viewBox='0 0 8 4'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M1 0.5L4 3.5L7 0.5'
-                stroke='black'
-                stroke-linecap='round'
-                stroke-linejoin='round'
-              />
-            </svg>
+            <Dropdown currencyList={this.displayCurrencySymbols()} />
           </div>
           <div className='cart-vector'>
             <svg
