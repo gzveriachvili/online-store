@@ -15,8 +15,9 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    const currencyDropdown = document.querySelector('#currency-dropdown');
+  /*
+componentDidMount() {
+    let currencyDropdown = document.querySelector('#currency-dropdown');
     currencyDropdown.addEventListener('click', () => {
       switch (currencyDropdown.value) {
         case 'GBP':
@@ -46,6 +47,9 @@ class App extends Component {
       }
     });
   }
+
+
+  */
 
   render() {
     return (

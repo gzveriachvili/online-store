@@ -9,7 +9,7 @@ class Dropdown extends Component {
 
   render() {
     return (
-      <div className='custom-select'>
+      <div className='currency-dropdown-wrapper'>
         <select id='currency-dropdown'>
           {/*
           <option value='' selected disabled hidden>

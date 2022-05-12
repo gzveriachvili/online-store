@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
+import './style/category.scss';
 
 class CategoryPage extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -59,7 +60,7 @@ class CategoryPage extends Component {
 
   render() {
     console.log(this.props);
-    return <div className='test-query'>{this.displayData()}</div>;
+    return <div className='category-page'>{this.displayData()}</div>;
   }
 }
 

@@ -1,9 +1,15 @@
 @import '../../../../../../style/colors';
 @import '../../../../../../style/fonts';
 
-.currency-dropdown select {
+.currency-dropdown-wrapper select {
   font-family: 'Raleway', sans-serif;
   font-weight: map-get($font-weights, medium);
   font-size: 18px;
   color: $main-text-color;
+
+  border: none;
+}
+
+.currency-dropdown-wrapper select:focus {
+  outline: none;
 }
