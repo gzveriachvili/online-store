@@ -1,3 +1,4 @@
+@import '../../../../../style/colors';
 @import '../../../../../style/fonts';
 
 .product-card {
@@ -5,6 +6,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  background-color: $main-color;
+  width: 386px;
+  height: 444px;
+
+  transition: box-shadow 0.3s ease-in-out;
+
+  position: relative;
+}
+
+.open-pdp-btn {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  cursor: pointer;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.4s ease-in-out;
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.product-card:hover {
+  box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.201);
 }
 
 .product-card img {
