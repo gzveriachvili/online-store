@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllCategories } from '../../../services/getQueries';
-import SelectBox from './utils/Dropdown/SelectBox';
 import './style/header.scss';
-
+import Dropdown from './utils/Dropdown/Dropdown';
 class Header extends Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
@@ -40,7 +39,6 @@ class Header extends Component {
       return <div>Loading currency symbols</div>;
     } else {
       return data.currencies.map((currency) => {
-        /*
         const currencyISO = {
           $: 'USD',
           '£': 'GBP',
@@ -48,19 +46,15 @@ class Header extends Component {
           '¥': 'YEN',
           '₽': 'RUB',
         };
-        */
 
         return (
-          /*
-        <option
+          <option
             value={currencyISO[currency.symbol]}
             id={'currency_' + currency.symbol}
           >
             {currency.symbol}&nbsp;
             {currencyISO[currency.symbol]}
           </option>
-        */
-          currency.symbol
         );
       });
     }
@@ -117,15 +111,7 @@ class Header extends Component {
         </div>
         <div className='header-currency-cart'>
           <div className='currencies'>
-            <SelectBox
-              items={[
-                { value: this.displayCurrencySymbols(), id: 1 },
-                { value: this.displayCurrencySymbols(), id: 2 },
-                { value: this.displayCurrencySymbols(), id: 3 },
-                { value: this.displayCurrencySymbols(), id: 4 },
-                { value: this.displayCurrencySymbols(), id: 5 },
-              ]}
-            />
+            <Dropdown currencyList={this.displayCurrencySymbols()} />
           </div>
           <div className='cart-vector'>
             <svg

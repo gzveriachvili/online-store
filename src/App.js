@@ -15,8 +15,7 @@ class App extends Component {
     };
   }
 
-  /*
-componentDidMount() {
+  componentDidMount() {
     let currencyDropdown = document.querySelector('#currency-dropdown');
     currencyDropdown.addEventListener('click', () => {
       switch (currencyDropdown.value) {
@@ -47,9 +46,6 @@ componentDidMount() {
       }
     });
   }
-
-
-  */
 
   render() {
     return (
