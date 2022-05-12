@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
+import Card from './utils/Card/Card';
 import './style/category.scss';
 
 class CategoryPage extends Component {
@@ -11,56 +12,43 @@ class CategoryPage extends Component {
 
   displayData() {
     const data = this.props.data;
-    const parse = require('html-react-parser');
+    //const parse = require('html-react-parser');
     if (data.loading) {
       return <div>Loading...</div>;
     } else {
       return data.categories[this.props.category].products.map((item) => {
         return (
-          <li key={item.id}>
-            <h2>Name: </h2>
-            {item.name}
-            <h4>ID: </h4>
-            {item.id}
-            <h4>Category: </h4>
-            {item.category}
-            <h4>In Stock: </h4>
-            {item.inStock}
-            <h4>Price: </h4>
-            {item.prices[this.props.currency].currency.symbol}
-            {item.prices[this.props.currency].amount}
-            <h4>Attribute: </h4>
-            {item.attributes.map((atr) => {
-              return (
-                <ul>
-                  <li>
-                    <h5>{atr.name}</h5>
-                    {atr.items.map((atr2) => {
-                      return (
-                        <ul>
-                          <li>{atr2.value}</li>
-                        </ul>
-                      );
-                    })}
-                  </li>
-                </ul>
-              );
-            })}
-            <h4>Images: </h4>
-            {item.gallery.map((img) => {
-              return <img src={img} alt={item.name}></img>;
-            })}
-            <h4>Description: </h4>
-            {parse(item.description)}
-          </li>
+          <Card
+            thumbnail={item.gallery[0]}
+            productTitle={item.name}
+            productPrice={
+              item.prices[this.props.currency].currency.symbol +
+              item.prices[this.props.currency].amount
+            }
+          />
         );
       });
     }
   }
 
+  displayCategoryName() {
+    const data = this.props.data;
+    //const parse = require('html-react-parser');
+    if (data.loading) {
+      return <div>Loading...</div>;
+    } else {
+      return data.categories[this.props.category].name;
+    }
+  }
+
   render() {
     console.log(this.props);
-    return <div className='category-page'>{this.displayData()}</div>;
+    return (
+      <div className='category-page'>
+        <h2>{this.displayCategoryName()}</h2>
+        <div className='product-cards-section'>{this.displayData()}</div>
+      </div>
+    );
   }
 }
 

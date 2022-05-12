@@ -1,7 +1,31 @@
+@import '../../../style/colors';
+@import '../../../style/fonts';
+
 .category-page {
   margin-left: 70px;
+  margin-right: 70px;
+  margin-bottom: 35px;
+  font-family: 'Raleway', sans-serif;
+  font-style: normal;
+  color: $main-text-color;
 }
 
-.category-page img {
-  width: 150px;
+.category-page h2 {
+  margin: 70px 0px 70px 0px;
+  text-transform: capitalize;
+  font-size: 42px;
+  font-weight: map-get($font-weights, regular);
+}
+
+.product-cards-section {
+  overflow: auto;
+  display: grid;
+  column-gap: 50px;
+  row-gap: 100px;
+  padding: 4px;
+
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 2fr));
+
+  text-align: center;
 }
