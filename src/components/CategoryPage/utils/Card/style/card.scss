@@ -8,8 +8,8 @@
   justify-content: center;
 
   background-color: $main-color;
-  width: 386px;
-  height: 444px;
+  min-width: 386px;
+  min-height: 444px;
 
   transition: box-shadow 0.3s ease-in-out;
 
@@ -34,6 +34,10 @@
 
 .hide {
   visibility: hidden;
+}
+
+.nostock {
+  background-color: red;
 }
 
 .product-card:hover {

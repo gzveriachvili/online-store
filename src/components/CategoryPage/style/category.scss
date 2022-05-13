@@ -18,7 +18,7 @@
 }
 
 .product-cards-section {
-  overflow: auto;
+  overflow-x: hidden;
   display: grid;
   column-gap: 50px;
   row-gap: 100px;

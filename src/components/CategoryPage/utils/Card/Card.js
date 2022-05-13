@@ -21,12 +21,18 @@ class Card extends Component {
         buttons[i].classList.remove('show');
         buttons[i].classList.add('hide');
       });
+
+      if (cards[i].getAttribute('data-instock') === 'false') {
+        cards[i].classList.add('nostock');
+      } else if (cards[i].getAttribute('data-instock') === 'true') {
+        cards[i].classList.remove('nostock');
+      }
     }
   }
 
   render() {
     return (
-      <div data-index={this.props.dataIndex} className='product-card'>
+      <div data-instock={this.props.dataInStock} className='product-card'>
         <div className='img-text'>
           <img src={this.props.thumbnail} alt={this.props.productTitle}></img>
           <div className='title-price'>

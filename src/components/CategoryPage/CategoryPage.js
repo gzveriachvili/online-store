@@ -19,6 +19,7 @@ class CategoryPage extends Component {
       return data.categories[this.props.category].products.map((item) => {
         return (
           <Card
+            dataInStock={item.inStock}
             thumbnail={item.gallery[0]}
             productTitle={item.name}
             productPrice={
