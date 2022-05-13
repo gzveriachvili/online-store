@@ -18,8 +18,8 @@
 
 .open-pdp-btn {
   position: absolute;
-  bottom: 10%;
-  right: 5%;
+  bottom: 8%;
+  right: 10%;
   cursor: pointer;
 
   visibility: hidden;
@@ -37,7 +37,16 @@
 }
 
 .nostock {
-  background-color: red;
+  opacity: 0.5;
+  /* cursor: not-allowed; */
+}
+
+.nostock::before {
+  content: 'OUT OF STOCK';
+  position: absolute;
+
+  font-size: 24px;
+  font-weight: map-get($font-weights, regular);
 }
 
 .product-card:hover {

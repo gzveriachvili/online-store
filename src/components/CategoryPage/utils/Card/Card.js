@@ -7,27 +7,55 @@ class Card extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    const cards = document.querySelectorAll('.product-card');
-    const buttons = document.querySelectorAll('.open-pdp-btn');
+  displayCartButton = () => {
+    let cards = document.querySelectorAll('.product-card');
+    let buttons = document.querySelectorAll('.open-pdp-btn');
 
     for (let i = 0; i <= cards.length - 1; i++) {
-      cards[i].addEventListener('mouseover', () => {
-        buttons[i].classList.add('show');
-        buttons[i].classList.remove('hide');
-      });
+      if (cards[i].getAttribute('data-instock') === 'true') {
+        cards[i].addEventListener('mouseover', () => {
+          buttons[i].classList.add('show');
+          buttons[i].classList.remove('hide');
+        });
 
-      cards[i].addEventListener('mouseout', () => {
-        buttons[i].classList.remove('show');
-        buttons[i].classList.add('hide');
-      });
+        cards[i].addEventListener('mouseout', () => {
+          buttons[i].classList.remove('show');
+          buttons[i].classList.add('hide');
+        });
+      } else {
+        cards[i].addEventListener('mouseover', () => {
+          buttons[i].classList.remove('show');
+          buttons[i].classList.add('hide');
+        });
 
-      if (cards[i].getAttribute('data-instock') === 'false') {
-        cards[i].classList.add('nostock');
-      } else if (cards[i].getAttribute('data-instock') === 'true') {
-        cards[i].classList.remove('nostock');
+        cards[i].addEventListener('mouseout', () => {
+          buttons[i].classList.remove('show');
+          buttons[i].classList.add('hide');
+        });
       }
     }
+  };
+
+  displayInStock = () => {
+    let cards = document.querySelectorAll('.product-card');
+
+    cards.forEach((card) => {
+      if (card.getAttribute('data-instock') === 'false') {
+        card.classList.add('nostock');
+      } else {
+        card.classList.remove('nostock');
+      }
+    });
+  };
+
+  componentDidMount() {
+    this.displayCartButton();
+    this.displayInStock();
+  }
+
+  componentDidUpdate() {
+    this.displayCartButton();
+    this.displayInStock();
   }
 
   render() {
