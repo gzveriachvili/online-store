@@ -78,7 +78,9 @@ class App extends Component {
 
           <Route
             path='/sw-erd-test/product/:productID'
-            element={<ProductPage />}
+            element={
+              <ProductPage category='0' currency={this.state.currencyKey} />
+            }
           />
 
           <Route path='*' element={<ErrorPage />} />
