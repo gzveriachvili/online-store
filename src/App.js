@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style/App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import CategoryPage from './components/CategoryPage/CategoryPage';
+import ProductPage from './components/ProductPage/ProductPage';
 import ErrorPage from './components/Utils/ErrorPage/ErrorPage';
 import Header from './components/Utils/Header/Header';
 
@@ -74,6 +75,12 @@ class App extends Component {
               <CategoryPage currency={this.state.currencyKey} category='2' />
             }
           />
+
+          <Route
+            path='/sw-erd-test/product/:productID'
+            element={<ProductPage />}
+          />
+
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </div>

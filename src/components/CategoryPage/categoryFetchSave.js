@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
-import Card from './utils/Card/Card';
 import './style/category.scss';
 
 class CategoryPage extends Component {
@@ -19,15 +18,6 @@ class CategoryPage extends Component {
       return data.categories[this.props.category].products.map((item) => {
         return (
           <div>
-            <Card
-              thumbnail={item.gallery[0]}
-              productTitle={item.name}
-              productPrice={
-                item.prices[this.props.currency].currency.symbol +
-                item.prices[this.props.currency].amount
-              }
-            />
-            ;
             <li key={item.id}>
               <h2>Name: </h2>
               {item.name}
