@@ -12,17 +12,70 @@ class ProductPage extends Component {
   changeImage(e) {
     console.log(e.target.src);
     let imgRight = document.querySelector('.img-right').firstChild;
-    console.log(imgRight);
 
     imgRight.src = e.target.src;
   }
 
+  convertHexToSwatch() {
+    let productColor = document.querySelector('.product-color').childNodes;
+    productColor.forEach((child) => {
+      child.style.backgroundColor = child.getAttribute('value');
+    });
+  }
+
+  createToggle() {
+    //Attributes
+    let allAttributes = document.querySelectorAll('.product-attributes');
+
+    allAttributes.forEach((attribute) => {
+      attribute = attribute.childNodes;
+      for (let i = 0; i <= attribute.length - 1; i++) {
+        attribute[0].classList.add('attribute-selected');
+        attribute[i].addEventListener('click', () => {
+          attribute.forEach((option) => {
+            option.classList.remove('attribute-selected');
+          });
+          attribute[i].classList.add('attribute-selected');
+        });
+      }
+    });
+
+    //Colors
+    let colorAttributes = document.querySelector('.product-color').childNodes;
+    for (let i = 0; i <= colorAttributes.length - 1; i++) {
+      colorAttributes[0].classList.add('color-selected');
+      colorAttributes[i].addEventListener('click', () => {
+        colorAttributes.forEach((option) => {
+          option.classList.remove('color-selected');
+        });
+        colorAttributes[i].classList.add('color-selected');
+      });
+    }
+  }
+
   componentDidMount() {
     try {
-      let productColor = document.querySelector('.product-color').childNodes;
-      productColor.forEach((child) => {
-        child.style.backgroundColor = child.getAttribute('value');
-      });
+      this.convertHexToSwatch();
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      this.createToggle();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidUpdate() {
+    try {
+      this.convertHexToSwatch();
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      this.createToggle();
     } catch (error) {
       console.log(error);
     }

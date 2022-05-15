@@ -102,16 +102,22 @@
 }
 
 .product-color li {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: map-get($font-weights, regular);
-
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
+}
+
+.attribute-selected {
+  background-color: $main-text-color;
+  color: $main-color;
+}
+
+.color-selected {
+  border: 2px solid $main-color;
+  outline: 2px solid $accent-color;
 }
 
 .product-price {
