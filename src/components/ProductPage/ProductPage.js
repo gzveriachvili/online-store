@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
+import './style/productpage.scss';
 
 class ProductPage extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -8,21 +9,24 @@ class ProductPage extends Component {
     super(props);
   }
 
-  // displayData() {
-  //   const data = this.props.data;
-  //   const parse = require('html-react-parser');
-  //   if (data.loading) {
-  //     return <div>Loading...</div>;
-  //   } else {
-  //     return (
-  //       <div>
-  //         <p>{this.id}</p>
-  //         <p>{data.product.name}</p>
-  //         <p>{data.product.brand}</p>
-  //       </div>
-  //     );
-  //   }
-  // }
+  changeImage(e) {
+    console.log(e.target.src);
+    let imgRight = document.querySelector('.img-right').firstChild;
+    console.log(imgRight);
+
+    imgRight.src = e.target.src;
+  }
+
+  componentDidMount() {
+    try {
+      let productColor = document.querySelector('.product-color').childNodes;
+      productColor.forEach((child) => {
+        child.style.backgroundColor = child.getAttribute('value');
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   displayData() {
     const data = this.props.data;
@@ -35,46 +39,76 @@ class ProductPage extends Component {
     if (data.loading) {
       return <div>Loading...</div>;
     } else {
+      // eslint-disable-next-line array-callback-return
       return data.categories[this.props.category].products.map((item) => {
         if (item.id === id) {
           return (
-            <div>
-              <li key={item.id}>
-                <h2>Name: </h2>
-                {item.name}
-                <h4>ID: </h4>
-                {item.id}
-                <h4>Category: </h4>
-                {item.category}
-                <h4>In Stock: </h4>
-                {item.inStock}
-                <h4>Price: </h4>
-                {item.prices[this.props.currency].currency.symbol}
-                {item.prices[this.props.currency].amount}
-                <h4>Attribute: </h4>
+            <div className='product-info'>
+              <div className='img-section'>
+                <div className='img-left'>
+                  {item.gallery.map((img, index) => {
+                    return (
+                      <img
+                        className={`small-img-${index}`}
+                        onClick={(e) => {
+                          this.changeImage(e);
+                        }}
+                        src={img}
+                        alt={item.name}
+                      ></img>
+                    );
+                  })}
+                </div>
+
+                <div className='img-right'>
+                  <img src={item.gallery[0]} alt={item.name}></img>
+                </div>
+              </div>
+              <div className='details-section'>
+                <div className='brand-and-name'>
+                  <p>{item.brand}</p>
+                  <p>{item.name}</p>
+                </div>
+
                 {item.attributes.map((atr) => {
-                  return (
-                    <ul>
-                      <li>
-                        <h5>{atr.name}</h5>
-                        {atr.items.map((atr2) => {
-                          return (
-                            <ul>
-                              <li>{atr2.value}</li>
-                            </ul>
-                          );
-                        })}
-                      </li>
-                    </ul>
-                  );
+                  if (atr.name !== 'Color') {
+                    return (
+                      <div className='attributes-section'>
+                        <p className='attribute-name'>{atr.name}:</p>
+                        <ul className='product-attributes'>
+                          {atr.items.map((atr2) => {
+                            return <li value={atr2.value}>{atr2.value}</li>;
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className='attributes-section'>
+                        <p className='attribute-name'>{atr.name}:</p>
+                        <ul className='product-color'>
+                          {atr.items.map((atr2) => {
+                            return <li value={atr2.value}></li>;
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  }
                 })}
-                <h4>Images: </h4>
-                {item.gallery.map((img) => {
-                  return <img src={img} alt={item.name}></img>;
-                })}
-                <h4>Description: </h4>
-                {parse(item.description)}
-              </li>
+
+                <div className='product-price'>
+                  <p>Price: </p>
+                  <p>
+                    {item.prices[this.props.currency].currency.symbol}
+                    {item.prices[this.props.currency].amount}
+                  </p>
+                </div>
+
+                <button>add to cart</button>
+                <div className='product-description'>
+                  {parse(item.description)}
+                </div>
+              </div>
             </div>
           );
         }
@@ -84,15 +118,8 @@ class ProductPage extends Component {
 
   render() {
     console.log(this.props);
-    return (
-      <div>
-        <div>{this.displayData()}</div>
-      </div>
-    );
+    return this.displayData();
   }
 }
 
-console.log(window.location.href);
-
 export default graphql(getAllProducts)(ProductPage);
-//export default graphql(productRequest(id))(ProductPage);
