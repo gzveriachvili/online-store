@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import AuthContext, {
+  AuthProvider,
+  AuthConsumer,
+} from './components/Context/AuthContext';
+
 import './style/App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import CategoryPage from './components/CategoryPage/CategoryPage';
 import ProductPage from './components/ProductPage/ProductPage';
 import ErrorPage from './components/Utils/ErrorPage/ErrorPage';
 import Header from './components/Utils/Header/Header';
+import CartPage from './components/CartPage/CartPage';
 
 class App extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -13,6 +19,7 @@ class App extends Component {
 
     this.state = {
       currencyKey: 0,
+      content: 'Product content will go here',
     };
   }
 
@@ -76,18 +83,24 @@ class App extends Component {
             }
           />
 
-          <Route
-            path='/sw-erd-test/product/:productID'
-            element={
-              <ProductPage category='0' currency={this.state.currencyKey} />
-            }
-          />
-
           <Route path='*' element={<ErrorPage />} />
         </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route
+              path='/sw-erd-test/product/:productID'
+              element={
+                <ProductPage category='0' currency={this.state.currencyKey} />
+              }
+            />
+            <Route path='/sw-erd-test/cart' element={<CartPage />} />
+          </Routes>
+        </AuthProvider>
       </div>
     );
   }
 }
+
+//ProductPage.contextType = AuthContext;
 
 export default App;

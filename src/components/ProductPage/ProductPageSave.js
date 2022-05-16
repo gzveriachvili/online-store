@@ -3,11 +3,6 @@ import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
 import './style/productpage.scss';
 
-import AuthContext, {
-  AuthProvider,
-  AuthConsumer,
-} from '../Context/AuthContext';
-
 class ProductPage extends Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
@@ -216,15 +211,9 @@ class ProductPage extends Component {
     }
   }
 
-  static contextType = AuthContext;
-
   render() {
-    console.log('Context:', this.context);
-    const { username, isAuthenticated, logIn, logOut } = this.context;
     return (
       <div>
-        <h1>User: {username}</h1>
-        <button onClick={logIn}>LOG IN</button>
         {this.displayData()}
         <h1>
           {this.state.cart.map((item) => {

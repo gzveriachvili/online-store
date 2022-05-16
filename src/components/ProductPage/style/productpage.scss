@@ -120,6 +120,10 @@
   outline: 2px solid $accent-color;
 }
 
+.color-visibility {
+  box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.405);
+}
+
 .product-price {
   font-weight: map-get($font-weights, bold);
 }
@@ -165,10 +169,10 @@
     0% 80%
   );
 
-  font-size: 14px;
-
   width: 250px;
   height: 80px;
+
+  transform: scale(1.1);
 }
 
 .product-description {
