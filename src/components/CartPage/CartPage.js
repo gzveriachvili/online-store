@@ -13,7 +13,6 @@ class CartPage extends Component {
           return (
             <div>
               <h1>Username: {username}</h1>
-              <button onClick={logIn}>LOG IN</button>
             </div>
           );
         }}

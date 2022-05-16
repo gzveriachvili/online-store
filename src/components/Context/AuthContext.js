@@ -9,9 +9,9 @@ export class AuthProvider extends Component {
     isAuthenticated: false,
   };
 
-  logIn = () => {
+  logIn = (string) => {
     this.setState({
-      username: 'Bob',
+      username: string,
       isAuthenticated: true,
     });
   };

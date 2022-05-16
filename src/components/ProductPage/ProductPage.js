@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
 import './style/productpage.scss';
+import { Link } from 'react-router-dom';
 
 import AuthContext, {
   AuthProvider,
@@ -223,8 +224,15 @@ class ProductPage extends Component {
     const { username, isAuthenticated, logIn, logOut } = this.context;
     return (
       <div>
+        <Link to='/sw-erd-test/cart'>Cart</Link>
         <h1>User: {username}</h1>
-        <button onClick={logIn}>LOG IN</button>
+        <button
+          onClick={() => {
+            logIn('its working');
+          }}
+        >
+          LOG IN
+        </button>
         {this.displayData()}
         <h1>
           {this.state.cart.map((item) => {
