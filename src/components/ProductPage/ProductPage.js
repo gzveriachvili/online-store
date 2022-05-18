@@ -4,10 +4,7 @@ import { getAllProducts } from '../../services/getQueries';
 import './style/productpage.scss';
 import { Link } from 'react-router-dom';
 
-import AuthContext, {
-  AuthProvider,
-  AuthConsumer,
-} from '../Context/AuthContext';
+import CartContext from '../Context/CartContext';
 
 class ProductPage extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -19,13 +16,7 @@ class ProductPage extends Component {
     };
   }
 
-  addItem(item) {
-    this.setState({
-      cart: this.state.cart.concat(item),
-    });
-
-    //Prevent duplicate attributes after
-
+  resetSelection() {
     let allAttributes = document.querySelectorAll('.product-attributes');
 
     allAttributes.forEach((attribute) => {
@@ -92,6 +83,29 @@ class ProductPage extends Component {
     }
   }
 
+  getSelectedAtr() {
+    let selectedAtr = document.querySelectorAll('.attribute-selected');
+    let arr = [];
+    selectedAtr.forEach((child) => {
+      arr.push({
+        value: child.getAttribute('value'),
+        id: child.getAttribute('data-index'),
+      });
+    });
+
+    return arr;
+  }
+
+  getSelectedCol() {
+    let selectedCol = document.querySelectorAll('.color-selected');
+    let arr = [];
+    selectedCol.forEach((child) => {
+      arr.push(child.getAttribute('value'));
+    });
+
+    return arr;
+  }
+
   componentDidMount() {
     try {
       this.convertHexToSwatch();
@@ -120,7 +134,9 @@ class ProductPage extends Component {
     }
   }
 
+  static contextType = CartContext;
   displayData() {
+    const { cart, logIn } = this.context;
     const data = this.props.data;
     const parse = require('html-react-parser');
 
@@ -162,14 +178,21 @@ class ProductPage extends Component {
                   <p>{item.name}</p>
                 </div>
 
-                {item.attributes.map((atr) => {
+                {item.attributes.map((atr, index) => {
                   if (atr.name !== 'Color') {
                     return (
                       <div className='attributes-section'>
                         <p className='attribute-name'>{atr.name}:</p>
                         <ul className='product-attributes'>
-                          {atr.items.map((atr2) => {
-                            return <li value={atr2.value}>{atr2.value}</li>;
+                          {atr.items.map((atr2, index2) => {
+                            return (
+                              <li
+                                data-index={`${index}${index2}`}
+                                value={atr2.value}
+                              >
+                                {atr2.value}
+                              </li>
+                            );
                           })}
                         </ul>
                       </div>
@@ -198,9 +221,12 @@ class ProductPage extends Component {
 
                 <button
                   onClick={() => {
-                    this.addItem(item);
-
-                    console.log('CART: ', this.state.cart);
+                    logIn([
+                      [item],
+                      [this.getSelectedAtr()],
+                      [this.getSelectedCol()],
+                    ]);
+                    this.resetSelection();
                   }}
                 >
                   add to cart
@@ -217,28 +243,12 @@ class ProductPage extends Component {
     }
   }
 
-  static contextType = AuthContext;
-
   render() {
-    console.log('Context:', this.context);
-    const { username, isAuthenticated, logIn, logOut } = this.context;
     return (
       <div>
-        <Link to='/sw-erd-test/cart'>Cart</Link>
-        <h1>User: {username}</h1>
-        <button
-          onClick={() => {
-            logIn('its working');
-          }}
-        >
-          LOG IN
-        </button>
         {this.displayData()}
-        <h1>
-          {this.state.cart.map((item) => {
-            return item.name;
-          })}
-        </h1>
+
+        <Link to='/sw-erd-test/cart'>Cart</Link>
       </div>
     );
   }

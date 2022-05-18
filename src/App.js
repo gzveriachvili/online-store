@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import AuthContext, {
-  AuthProvider,
-  AuthConsumer,
-} from './components/Context/AuthContext';
+import CartContext, {
+  CartProvider,
+  CartConsumer,
+} from './components/Context/CartContext';
 
 import './style/App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
@@ -59,48 +59,48 @@ class App extends Component {
     return (
       <div className='App'>
         <Header />
-        <Routes>
-          <Route
-            path='/sw-erd-test'
-            element={<Navigate to='/sw-erd-test/all' />}
-          />
-          <Route
-            path='/sw-erd-test/all'
-            element={
-              <CategoryPage currency={this.state.currencyKey} category='0' />
-            }
-          />
-          <Route
-            path='/sw-erd-test/clothes'
-            element={
-              <CategoryPage currency={this.state.currencyKey} category='1' />
-            }
-          />
-          <Route
-            path='/sw-erd-test/tech'
-            element={
-              <CategoryPage currency={this.state.currencyKey} category='2' />
-            }
-          />
-
-          <Route path='*' element={<ErrorPage />} />
-        </Routes>
-        <AuthProvider>
+        <CartProvider>
           <Routes>
+            <Route
+              path='/sw-erd-test'
+              element={<Navigate to='/sw-erd-test/all' />}
+            />
+            <Route
+              path='/sw-erd-test/all'
+              element={
+                <CategoryPage currency={this.state.currencyKey} category='0' />
+              }
+            />
+            <Route
+              path='/sw-erd-test/clothes'
+              element={
+                <CategoryPage currency={this.state.currencyKey} category='1' />
+              }
+            />
+            <Route
+              path='/sw-erd-test/tech'
+              element={
+                <CategoryPage currency={this.state.currencyKey} category='2' />
+              }
+            />
+
             <Route
               path='/sw-erd-test/product/:productID'
               element={
                 <ProductPage category='0' currency={this.state.currencyKey} />
               }
             />
-            <Route path='/sw-erd-test/cart' element={<CartPage />} />
+            <Route
+              exact
+              path='/sw-erd-test/cart'
+              element={<CartPage currency={this.state.currencyKey} />}
+            />
+            <Route path='*' element={<ErrorPage />} />
           </Routes>
-        </AuthProvider>
+        </CartProvider>
       </div>
     );
   }
 }
-
-//ProductPage.contextType = AuthContext;
 
 export default App;
