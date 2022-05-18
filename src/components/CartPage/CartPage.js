@@ -189,24 +189,26 @@ class CartPage extends Component {
           {(props) => {
             const { cart } = props;
 
-            return (
-              <div>
-                <div className='order-section'>
-                  <div className='order-details'>
-                    <div className='order-col-1'>
-                      <p>Tax 21%:</p>
-                      <p>Quantity: </p>
-                      <p>Total:</p>
-                    </div>
-                    <div className='order-col-2'>
-                      <p>$42 USD</p>
-                      <p>{cart.length}</p>
-                      <p>$200 USD</p>
-                    </div>
+            return cart.length > 0 ? (
+              <div className='order-section'>
+                <div className='order-details'>
+                  <div className='order-col-1'>
+                    <p>Tax 21%:</p>
+                    <p>Quantity: </p>
+                    <p>Total:</p>
                   </div>
-
-                  <button>order</button>
+                  <div className='order-col-2'>
+                    <p>$42 USD</p>
+                    <p>{cart.length}</p>
+                    <p>$200 USD</p>
+                  </div>
                 </div>
+
+                <button>order</button>
+              </div>
+            ) : (
+              <div className='empty-cart'>
+                <h2>Your cart is empty.</h2>
               </div>
             );
           }}
