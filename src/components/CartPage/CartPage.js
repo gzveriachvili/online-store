@@ -40,6 +40,7 @@ class CartPage extends Component {
         <CartConsumer>
           {(props) => {
             const { cart } = props;
+
             console.log('CART CONTENT: ', cart);
 
             return cart.map((arr) => {
@@ -181,6 +182,33 @@ class CartPage extends Component {
                 );
               });
             });
+          }}
+        </CartConsumer>
+
+        <CartConsumer>
+          {(props) => {
+            const { cart } = props;
+
+            return (
+              <div>
+                <div className='order-section'>
+                  <div className='order-details'>
+                    <div className='order-col-1'>
+                      <p>Tax 21%:</p>
+                      <p>Quantity: </p>
+                      <p>Total:</p>
+                    </div>
+                    <div className='order-col-2'>
+                      <p>$42 USD</p>
+                      <p>{cart.length}</p>
+                      <p>$200 USD</p>
+                    </div>
+                  </div>
+
+                  <button>order</button>
+                </div>
+              </div>
+            );
           }}
         </CartConsumer>
       </div>
