@@ -100,7 +100,9 @@ class ProductPage extends Component {
     let selectedCol = document.querySelectorAll('.color-selected');
     let arr = [];
     selectedCol.forEach((child) => {
-      arr.push(child.getAttribute('value'));
+      arr.push({
+        value: child.getAttribute('value'),
+      });
     });
 
     return arr;

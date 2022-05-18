@@ -39,17 +39,11 @@
   margin-top: 50px;
   flex-direction: row-reverse;
   justify-content: space-between;
-
-  max-height: fit-content;
+  max-height: 100%;
 }
 
 .details-section-cart-page {
   max-height: 100%;
-}
-
-.img-section-cart-page img {
-  width: 200px;
-  height: 100%;
 }
 
 .cart-page-quantity {

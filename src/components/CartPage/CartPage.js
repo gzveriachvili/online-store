@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './style/cartpage.scss';
-import CartContext, {
-  CartProvider,
-  CartConsumer,
-} from '../Context/CartContext';
+import { CartConsumer } from '../Context/CartContext';
+import ImageSlider from './utils/ImageSlider/ImageSlider';
 
 class CartPage extends Component {
   convertHexToSwatch() {
@@ -107,9 +105,11 @@ class CartPage extends Component {
                         </div>
                       </div>
 
-                      <div className='img-right'>
-                        <img src={item.gallery[0]} alt={item.name}></img>
-                      </div>
+                      <ImageSlider
+                        length={item.gallery.length}
+                        imgGallery={item.gallery}
+                        imgAlt={item.name}
+                      />
                     </div>
                     <div className='details-section details-section-cart-page'>
                       <div className='brand-and-name cart-page-brand-and-name'>
@@ -133,10 +133,8 @@ class CartPage extends Component {
                                 {atr.items.map((atr2, index2) => {
                                   return (
                                     <li
-                                      data-index={`${index}${index2}`}
                                       className={
                                         arr[1][0].find((el) => {
-                                          console.log('EL: ', el);
                                           return el.value == atr2.value;
                                         }) &&
                                         arr[1][0].find(
@@ -160,7 +158,18 @@ class CartPage extends Component {
                               <p className='attribute-name'>{atr.name}:</p>
                               <ul className='product-color product-color-cart-page'>
                                 {atr.items.map((atr2) => {
-                                  return <li value={atr2.value}></li>;
+                                  return (
+                                    <li
+                                      className={
+                                        arr[2][0].find(
+                                          (el) => el.value == atr2.value
+                                        )
+                                          ? 'color-selected'
+                                          : ''
+                                      }
+                                      value={atr2.value}
+                                    ></li>
+                                  );
                                 })}
                               </ul>
                             </div>
