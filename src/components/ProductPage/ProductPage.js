@@ -102,6 +102,7 @@ class ProductPage extends Component {
     selectedCol.forEach((child) => {
       arr.push({
         value: child.getAttribute('value'),
+        id: child.getAttribute('data-index'),
       });
     });
 
@@ -138,7 +139,7 @@ class ProductPage extends Component {
 
   static contextType = CartContext;
   displayData() {
-    const { cart, logIn } = this.context;
+    const { cart, addItem } = this.context;
     const data = this.props.data;
     const parse = require('html-react-parser');
 
@@ -204,8 +205,13 @@ class ProductPage extends Component {
                       <div className='attributes-section'>
                         <p className='attribute-name'>{atr.name}:</p>
                         <ul className='product-color'>
-                          {atr.items.map((atr2) => {
-                            return <li value={atr2.value}></li>;
+                          {atr.items.map((atr2, index2) => {
+                            return (
+                              <li
+                                value={atr2.value}
+                                data-index={`${index}${index2}`}
+                              ></li>
+                            );
                           })}
                         </ul>
                       </div>
@@ -223,7 +229,7 @@ class ProductPage extends Component {
 
                 <button
                   onClick={() => {
-                    logIn([
+                    addItem([
                       [item],
                       [this.getSelectedAtr()],
                       [this.getSelectedCol()],

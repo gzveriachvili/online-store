@@ -8,20 +8,27 @@ export class CartProvider extends Component {
     cart: [],
   };
 
-  logIn = (object) => {
+  addItem = (object) => {
     this.setState((prevState) => ({
       cart: [...prevState.cart, object],
     }));
   };
 
+  emptyCart = () => {
+    this.setState({
+      cart: [],
+    });
+  };
+
   render() {
     const { cart } = this.state;
-    const { logIn } = this;
+    const { addItem, emptyCart } = this;
     return (
       <CartContext.Provider
         value={{
           cart,
-          logIn,
+          addItem,
+          emptyCart,
         }}
       >
         {this.props.children}

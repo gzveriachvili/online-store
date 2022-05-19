@@ -5,13 +5,42 @@ import ImageSlider from './utils/ImageSlider/ImageSlider';
 
 class CartPage extends Component {
   convertHexToSwatch() {
-    let productColor = document.querySelector('.product-color').childNodes;
+    let productColor = document.querySelectorAll('.product-color');
     productColor.forEach((child) => {
-      child.style.backgroundColor = child.getAttribute('value');
-      if (child.getAttribute('value') === '#FFFFFF') {
-        child.classList.add('color-visibility');
-      }
+      let pcNodes = child.childNodes;
+      pcNodes.forEach((gChild) => {
+        gChild.style.backgroundColor = gChild.getAttribute('value');
+        if (gChild.getAttribute('value') === '#FFFFFF') {
+          gChild.classList.add('color-visibility');
+        }
+      });
     });
+  }
+
+  getSelectedAtr() {
+    let selectedAtr = document.querySelectorAll('.attribute-selected');
+    let arr = [];
+    selectedAtr.forEach((child) => {
+      arr.push({
+        value: child.getAttribute('value'),
+        id: child.getAttribute('data-index'),
+      });
+    });
+
+    return arr;
+  }
+
+  getSelectedCol() {
+    let selectedCol = document.querySelectorAll('.color-selected');
+    let arr = [];
+    selectedCol.forEach((child) => {
+      arr.push({
+        value: child.getAttribute('value'),
+        id: child.getAttribute('data-index'),
+      });
+    });
+
+    return arr;
   }
 
   componentDidMount() {
@@ -20,9 +49,6 @@ class CartPage extends Component {
     } catch (error) {
       console.log(error);
     }
-
-    try {
-    } catch {}
   }
 
   componentDidUpdate() {
@@ -39,17 +65,28 @@ class CartPage extends Component {
         <h1>Cart</h1>
         <CartConsumer>
           {(props) => {
-            const { cart } = props;
+            const { cart, addItem } = props;
 
             console.log('CART CONTENT: ', cart);
 
             return cart.map((arr) => {
               return arr[0].map((item) => {
+                {
+                  console.log('This is ITEM:', item);
+                }
                 return (
                   <div className='product-info cart-page'>
                     <div className='img-section img-section-cart-page'>
                       <div className='cart-page-quantity'>
-                        <div>
+                        <div
+                          onClick={() => {
+                            addItem([
+                              [item],
+                              [this.getSelectedAtr()],
+                              [this.getSelectedCol()],
+                            ]);
+                          }}
+                        >
                           <svg
                             width='45'
                             height='45'
@@ -145,6 +182,7 @@ class CartPage extends Component {
                                           : ''
                                       }
                                       value={atr2.value}
+                                      data-index={`${index}${index2}`}
                                     >
                                       {atr2.value}
                                     </li>
@@ -158,17 +196,21 @@ class CartPage extends Component {
                             <div className='attributes-section attributes-section-product-page'>
                               <p className='attribute-name'>{atr.name}:</p>
                               <ul className='product-color product-color-cart-page'>
-                                {atr.items.map((atr2) => {
+                                {atr.items.map((atr2, index2) => {
                                   return (
                                     <li
                                       className={
                                         arr[2][0].find(
                                           (el) => el.value == atr2.value
+                                        ) &&
+                                        arr[2][0].find(
+                                          (ind) => ind.id == `${index}${index2}`
                                         )
                                           ? 'color-selected'
                                           : ''
                                       }
                                       value={atr2.value}
+                                      data-index={`${index}${index2}`}
                                     ></li>
                                   );
                                 })}
@@ -187,7 +229,7 @@ class CartPage extends Component {
 
         <CartConsumer>
           {(props) => {
-            const { cart } = props;
+            const { cart, emptyCart } = props;
 
             return cart.length > 0 ? (
               <div className='order-section'>
@@ -204,7 +246,14 @@ class CartPage extends Component {
                   </div>
                 </div>
 
-                <button>order</button>
+                <button
+                  onClick={() => {
+                    window.confirm("Pressing 'OK' will empty your cart.") &&
+                      emptyCart();
+                  }}
+                >
+                  order
+                </button>
               </div>
             ) : (
               <div className='empty-cart'>
