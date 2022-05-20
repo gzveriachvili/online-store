@@ -249,6 +249,9 @@ class ProductPage extends Component {
                             item.name +
                               this.getSelectedAtr()
                                 .map((val) => val.value)
+                                .join('') +
+                              this.getSelectedCol()
+                                .map((val) => val.value)
                                 .join(''),
                           ],
                         ],

@@ -32,6 +32,14 @@ export class CartProvider extends Component {
     });
   };
 
+  removeFromCart = (toremove) => {
+    this.setState({
+      cart: this.state.cart.filter((prod) => prod !== toremove),
+    });
+
+    console.log('cart now: ', this.state.cart[0]);
+  };
+
   emptyCart = () => {
     this.setState({
       cart: [],
@@ -40,7 +48,8 @@ export class CartProvider extends Component {
 
   render() {
     const { cart, itemNames, quantities, qtyID } = this.state;
-    const { addItem, emptyCart, addQuantity, removeQuantity } = this;
+    const { addItem, emptyCart, addQuantity, removeQuantity, removeFromCart } =
+      this;
     return (
       <CartContext.Provider
         value={{
@@ -50,6 +59,7 @@ export class CartProvider extends Component {
           qtyID,
           addQuantity,
           removeQuantity,
+          removeFromCart,
           addItem,
           emptyCart,
         }}

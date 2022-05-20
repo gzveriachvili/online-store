@@ -85,6 +85,7 @@ class CartPage extends Component {
               addQuantity,
               qtyID,
               removeQuantity,
+              removeFromCart,
             } = props;
 
             console.log('CART CONTENT: ', cart);
@@ -153,33 +154,25 @@ class CartPage extends Component {
                               </div>
                               <div
                                 onClick={() => {
-                                  console.log(
-                                    'Remove this: ',
-
-                                    arr[3].join('') +
-                                      parseInt(
-                                        this.getOccurrence(
-                                          quantities,
-                                          arr[3].join(''),
-                                          item.name + arr[3].join('')
-                                        ) - 1
+                                  try {
+                                    removeQuantity(
+                                      arr[3].join('') +
+                                        parseInt(
+                                          this.getOccurrence(
+                                            quantities,
+                                            arr[3].join(''),
+                                            item.name + arr[3].join('')
+                                          ) - 1
+                                        ),
+                                      quantities[quantities.length - 1].charAt(
+                                        quantities[quantities.length - 1]
+                                          .length - 1
                                       )
-                                  );
-
-                                  removeQuantity(
-                                    arr[3].join('') +
-                                      parseInt(
-                                        this.getOccurrence(
-                                          quantities,
-                                          arr[3].join(''),
-                                          item.name + arr[3].join('')
-                                        ) - 1
-                                      ),
-                                    quantities[quantities.length - 1].charAt(
-                                      quantities[quantities.length - 1].length -
-                                        1
-                                    )
-                                  );
+                                    );
+                                  } catch {
+                                    alert(item.name);
+                                    //removeFromCart('0');
+                                  }
                                 }}
                               >
                                 <svg
@@ -215,7 +208,10 @@ class CartPage extends Component {
                           <div className='details-section details-section-cart-page'>
                             <div className='brand-and-name cart-page-brand-and-name'>
                               <p>{item.brand}</p>
-                              <p>{item.name}</p>
+                              <p>
+                                {item.name}
+                                {index}
+                              </p>
                             </div>
 
                             <div className='product-price cart-page-price'>
