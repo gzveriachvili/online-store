@@ -26,6 +26,7 @@ class ProductPage extends Component {
           option.classList.remove('attribute-selected');
         });
       }
+      attribute[0].classList.add('attribute-selected');
     });
 
     let colorAttributes = document.querySelector('.product-color').childNodes;
@@ -139,9 +140,11 @@ class ProductPage extends Component {
 
   static contextType = CartContext;
   displayData() {
-    const { cart, addItem } = this.context;
+    const { cart, itemNames, addItem, quantities, addQuantity } = this.context;
     const data = this.props.data;
     const parse = require('html-react-parser');
+
+    console.log('quantities: ', quantities);
 
     let id = window.location.pathname;
     id = id.split('/');
@@ -229,11 +232,40 @@ class ProductPage extends Component {
 
                 <button
                   onClick={() => {
-                    addItem([
-                      [item],
-                      [this.getSelectedAtr()],
-                      [this.getSelectedCol()],
-                    ]);
+                    if (
+                      !itemNames.includes(
+                        item.name +
+                          this.getSelectedAtr()
+                            .map((val) => val.value)
+                            .join('')
+                      )
+                    ) {
+                      addItem(
+                        [
+                          [item],
+                          [this.getSelectedAtr()],
+                          [this.getSelectedCol()],
+                          [
+                            item.name +
+                              this.getSelectedAtr()
+                                .map((val) => val.value)
+                                .join(''),
+                          ],
+                        ],
+
+                        item.name +
+                          this.getSelectedAtr()
+                            .map((val) => val.value)
+                            .join('')
+                      );
+                    } else {
+                      addQuantity(
+                        item.name +
+                          this.getSelectedAtr()
+                            .map((val) => val.value)
+                            .join('')
+                      );
+                    }
                     this.resetSelection();
                   }}
                 >

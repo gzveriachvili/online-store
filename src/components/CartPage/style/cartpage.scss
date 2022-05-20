@@ -53,7 +53,12 @@
   align-items: center;
 }
 
+.cart-page-quantity p {
+  user-select: none;
+}
+
 .order-section {
+  margin-top: 35px;
   margin-left: 70px;
   margin-bottom: 35px;
 }

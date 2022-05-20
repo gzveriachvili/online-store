@@ -25,8 +25,6 @@ class ImageSlider extends Component {
         current: this.state.current + 1,
       });
     }
-
-    console.log(this.state.current);
   }
 
   prevSlide() {
@@ -39,8 +37,6 @@ class ImageSlider extends Component {
         current: this.state.current - 1,
       });
     }
-
-    console.log(this.state.current);
   }
 
   render() {
