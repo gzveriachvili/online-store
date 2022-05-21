@@ -4,6 +4,8 @@ import { CartConsumer } from '../Context/CartContext';
 import ImageSlider from './utils/ImageSlider/ImageSlider';
 
 class CartPage extends Component {
+  // eslint-disable-next-line no-useless-constructor
+
   convertHexToSwatch() {
     let productColor = document.querySelectorAll('.product-color');
     productColor.forEach((child) => {
@@ -83,7 +85,7 @@ class CartPage extends Component {
               itemNames,
               quantities,
               addQuantity,
-              qtyID,
+
               removeQuantity,
               removeItem,
               emptyCart,
@@ -92,7 +94,6 @@ class CartPage extends Component {
             console.log('CART CONTENT: ', cart);
             console.log('ITEM CONTENT: ', itemNames);
             console.log('QUANTITIES: ', quantities);
-            console.log('QTY ID: ', qtyID);
 
             if (2 > 1) {
               return cart.map((arr, index) => {
@@ -309,6 +310,23 @@ class CartPage extends Component {
         <CartConsumer>
           {(props) => {
             const { cart, emptyCart, quantities } = props;
+            let s = [];
+
+            cart.map((arr) => {
+              return arr[0].map((item) => {
+                return s.push(
+                  item.prices[this.props.currency].amount *
+                    this.getOccurrence(
+                      quantities,
+                      arr[3].join(''),
+                      arr[3].join('')
+                    )
+                );
+              });
+            });
+
+            let total = s.reduce((a, b) => a + b, 0);
+            let tax = (21 / 100) * total;
 
             return cart.length > 0 ? (
               <div className='order-section'>
@@ -319,9 +337,25 @@ class CartPage extends Component {
                     <p>Total:</p>
                   </div>
                   <div className='order-col-2'>
-                    <p>$42 USD</p>
+                    <p>
+                      {cart.map((arr) => {
+                        return arr[0].map(
+                          (item) =>
+                            item.prices[this.props.currency].currency.symbol
+                        );
+                      })}
+                      {tax.toFixed(2)}
+                    </p>
                     <p>{cart.length + quantities.length}</p>
-                    <p>$200 USD</p>
+                    <p id='sum'>
+                      {cart.map((arr) => {
+                        return arr[0].map(
+                          (item) =>
+                            item.prices[this.props.currency].currency.symbol
+                        );
+                      })}
+                      {(parseFloat(total) + parseFloat(tax)).toFixed(2)}
+                    </p>
                   </div>
                 </div>
 

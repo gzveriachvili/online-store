@@ -8,7 +8,6 @@ export class CartProvider extends Component {
     cart: [],
     itemNames: [],
     quantities: [],
-    qtyID: 1,
   };
 
   addItem = (object, itemName) => {
@@ -21,14 +20,12 @@ export class CartProvider extends Component {
   addQuantity = (quantity) => {
     this.setState({
       quantities: [...this.state.quantities, quantity],
-      qtyID: this.state.qtyID + 1,
     });
   };
 
-  removeQuantity = (toremove, lastItemID) => {
+  removeQuantity = (toremove) => {
     this.setState({
       quantities: this.state.quantities.filter((prod) => prod !== toremove),
-      qtyID: parseInt(lastItemID),
     });
   };
 
@@ -47,21 +44,28 @@ export class CartProvider extends Component {
   };
 
   render() {
-    const { cart, itemNames, quantities, qtyID } = this.state;
-    const { addItem, emptyCart, addQuantity, removeQuantity, removeItem } =
-      this;
+    const { cart, itemNames, quantities, sum } = this.state;
+    const {
+      addItem,
+      emptyCart,
+      addQuantity,
+      removeQuantity,
+      removeItem,
+      addSum,
+    } = this;
     return (
       <CartContext.Provider
         value={{
           cart,
           itemNames,
+          sum,
           quantities,
-          qtyID,
           addQuantity,
           removeQuantity,
           removeItem,
           addItem,
           emptyCart,
+          addSum,
         }}
       >
         {this.props.children}
