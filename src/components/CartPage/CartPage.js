@@ -337,23 +337,23 @@ class CartPage extends Component {
                     <p>Total:</p>
                   </div>
                   <div className='order-col-2'>
+                    {console.log(
+                      'symbol: ',
+                      cart[0][0][0].prices[this.props.currency].currency.symbol
+                    )}
                     <p>
-                      {cart.map((arr) => {
-                        return arr[0].map(
-                          (item) =>
-                            item.prices[this.props.currency].currency.symbol
-                        );
-                      })}
+                      {
+                        cart[0][0][0].prices[this.props.currency].currency
+                          .symbol
+                      }
                       {tax.toFixed(2)}
                     </p>
                     <p>{cart.length + quantities.length}</p>
                     <p id='sum'>
-                      {cart.map((arr) => {
-                        return arr[0].map(
-                          (item) =>
-                            item.prices[this.props.currency].currency.symbol
-                        );
-                      })}
+                      {
+                        cart[0][0][0].prices[this.props.currency].currency
+                          .symbol
+                      }
                       {(parseFloat(total) + parseFloat(tax)).toFixed(2)}
                     </p>
                   </div>
