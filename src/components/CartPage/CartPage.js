@@ -47,10 +47,10 @@ class CartPage extends Component {
     var count = 1;
 
     array.forEach((v) => {
-      // console.log('WORD LENGTH: ', wordLength.length / 2);
-      // console.log('V CHAR AT 0: ', v.slice(0, wordLength.length / 2 + 1));
-      // console.log('VALUE CHAR AT 0: ', value);
-      return v.slice(0, wordLength.length / 2 + 1) == value && count++;
+      console.log('WORD LENGTH: ', wordLength);
+      console.log('V CHAR AT 0: ', v.slice(0, 18));
+      console.log('VALUE CHAR AT 0: ', value);
+      return v.slice(0, wordLength.length) == value && count++;
     });
     return count;
   }
@@ -85,7 +85,8 @@ class CartPage extends Component {
               addQuantity,
               qtyID,
               removeQuantity,
-              removeFromCart,
+              removeItem,
+              emptyCart,
             } = props;
 
             console.log('CART CONTENT: ', cart);
@@ -110,7 +111,7 @@ class CartPage extends Component {
                                       this.getOccurrence(
                                         quantities,
                                         arr[3].join(''),
-                                        item.name + arr[3].join('')
+                                        arr[3].join('')
                                       )
                                   );
                                 }}
@@ -148,20 +149,27 @@ class CartPage extends Component {
                                   {this.getOccurrence(
                                     quantities,
                                     arr[3].join(''),
-                                    item.name + arr[3].join('')
+                                    arr[3].join('')
                                   )}
                                 </p>
                               </div>
                               <div
+                                //removeItem(0);
                                 onClick={() => {
-                                  try {
+                                  if (
+                                    this.getOccurrence(
+                                      quantities,
+                                      arr[3].join(''),
+                                      arr[3].join('')
+                                    ) >= 2
+                                  ) {
                                     removeQuantity(
                                       arr[3].join('') +
                                         parseInt(
                                           this.getOccurrence(
                                             quantities,
                                             arr[3].join(''),
-                                            item.name + arr[3].join('')
+                                            arr[3].join('')
                                           ) - 1
                                         ),
                                       quantities[quantities.length - 1].charAt(
@@ -169,9 +177,12 @@ class CartPage extends Component {
                                           .length - 1
                                       )
                                     );
-                                  } catch {
-                                    alert(item.name);
-                                    //removeFromCart('0');
+                                  } else {
+                                    if (cart.length >= 2) {
+                                      removeItem(index);
+                                    } else {
+                                      emptyCart();
+                                    }
                                   }
                                 }}
                               >
@@ -208,10 +219,7 @@ class CartPage extends Component {
                           <div className='details-section details-section-cart-page'>
                             <div className='brand-and-name cart-page-brand-and-name'>
                               <p>{item.brand}</p>
-                              <p>
-                                {item.name}
-                                {index}
-                              </p>
+                              <p>{item.name}</p>
                             </div>
 
                             <div className='product-price cart-page-price'>

@@ -110,6 +110,18 @@ class ProductPage extends Component {
     return arr;
   }
 
+  getOccurrence(array, value, wordLength) {
+    var count = 1;
+
+    array.forEach((v) => {
+      console.log('WORD LENGTH: ', wordLength);
+      console.log('V CHAR AT 0: ', v.slice(0, 18));
+      console.log('VALUE CHAR AT 0: ', value);
+      return v.slice(0, wordLength.length) == value && count++;
+    });
+    return count;
+  }
+
   componentDidMount() {
     try {
       this.convertHexToSwatch();
@@ -266,7 +278,8 @@ class ProductPage extends Component {
                         item.name +
                           this.getSelectedAtr()
                             .map((val) => val.value)
-                            .join('')
+                            .join('') +
+                          this.getOccurrence(quantities, item.name, item.name)
                       );
                     }
                     this.resetSelection();

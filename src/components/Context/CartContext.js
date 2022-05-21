@@ -32,23 +32,23 @@ export class CartProvider extends Component {
     });
   };
 
-  removeFromCart = (toremove) => {
+  removeItem = (index) => {
     this.setState({
-      cart: this.state.cart.filter((prod) => prod !== toremove),
+      cart: this.state.cart.filter((_, i) => i !== index),
     });
-
-    console.log('cart now: ', this.state.cart[0]);
   };
 
   emptyCart = () => {
     this.setState({
       cart: [],
+      itemNames: [],
+      quantities: [],
     });
   };
 
   render() {
     const { cart, itemNames, quantities, qtyID } = this.state;
-    const { addItem, emptyCart, addQuantity, removeQuantity, removeFromCart } =
+    const { addItem, emptyCart, addQuantity, removeQuantity, removeItem } =
       this;
     return (
       <CartContext.Provider
@@ -59,7 +59,7 @@ export class CartProvider extends Component {
           qtyID,
           addQuantity,
           removeQuantity,
-          removeFromCart,
+          removeItem,
           addItem,
           emptyCart,
         }}
