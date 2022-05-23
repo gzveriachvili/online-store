@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import CartContext, {
-  CartProvider,
-  CartConsumer,
-} from './components/Context/CartContext';
+import { CartProvider } from './components/Context/CartContext';
 
 import './style/App.scss';
 import { Route, Routes, Navigate } from 'react-router-dom';
@@ -19,7 +16,6 @@ class App extends Component {
 
     this.state = {
       currencyKey: 0,
-      content: 'Product content will go here',
     };
   }
 
@@ -58,8 +54,8 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <Header />
         <CartProvider>
+          <Header />
           <Routes>
             <Route
               path='/sw-erd-test'

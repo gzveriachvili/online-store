@@ -95,215 +95,199 @@ class CartPage extends Component {
             console.log('ITEM CONTENT: ', itemNames);
             console.log('QUANTITIES: ', quantities);
 
-            if (2 > 1) {
-              return cart.map((arr, index) => {
-                if (2 > 1) {
-                  return arr[0].map((item) => {
-                    if (2 > 1) {
-                      return (
-                        <div className='product-info cart-page'>
-                          <div className='img-section img-section-cart-page'>
-                            <div className='cart-page-quantity'>
-                              <div
-                                onClick={() => {
-                                  console.log('Arr1 attributes:', arr[1]);
-                                  addQuantity(
-                                    arr[3].join('') +
-                                      this.getOccurrence(
-                                        quantities,
-                                        arr[3].join(''),
-                                        arr[3].join('')
-                                      )
-                                  );
-                                }}
-                              >
-                                <svg
-                                  width='45'
-                                  height='45'
-                                  viewBox='0 0 45 45'
-                                  fill='none'
-                                  xmlns='http://www.w3.org/2000/svg'
-                                >
-                                  <path
-                                    d='M22.5 15V30'
-                                    stroke='#1D1F22'
-                                    stroke-linecap='round'
-                                    stroke-linejoin='round'
-                                  />
-                                  <path
-                                    d='M15 22.5H30'
-                                    stroke='#1D1F22'
-                                    stroke-linecap='round'
-                                    stroke-linejoin='round'
-                                  />
-                                  <rect
-                                    x='0.5'
-                                    y='0.5'
-                                    width='44'
-                                    height='44'
-                                    stroke='#1D1F22'
-                                  />
-                                </svg>
-                              </div>
-                              <div>
-                                <p>
-                                  {this.getOccurrence(
-                                    quantities,
-                                    arr[3].join(''),
-                                    arr[3].join('')
-                                  )}
-                                </p>
-                              </div>
-                              <div
-                                //removeItem(0);
-                                onClick={() => {
-                                  if (
+            return cart.map((arr, index) => {
+              return arr[0].map((item) => {
+                return (
+                  <div className='product-info cart-page'>
+                    <div className='img-section img-section-cart-page'>
+                      <div className='cart-page-quantity'>
+                        <div
+                          onClick={() => {
+                            console.log('Arr1 attributes:', arr[1]);
+                            addQuantity(
+                              arr[3].join('') +
+                                this.getOccurrence(
+                                  quantities,
+                                  arr[3].join(''),
+                                  arr[3].join('')
+                                )
+                            );
+                          }}
+                        >
+                          <svg
+                            width='45'
+                            height='45'
+                            viewBox='0 0 45 45'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M22.5 15V30'
+                              stroke='#1D1F22'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            />
+                            <path
+                              d='M15 22.5H30'
+                              stroke='#1D1F22'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            />
+                            <rect
+                              x='0.5'
+                              y='0.5'
+                              width='44'
+                              height='44'
+                              stroke='#1D1F22'
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <p>
+                            {this.getOccurrence(
+                              quantities,
+                              arr[3].join(''),
+                              arr[3].join('')
+                            )}
+                          </p>
+                        </div>
+                        <div
+                          //removeItem(0);
+                          onClick={() => {
+                            if (
+                              this.getOccurrence(
+                                quantities,
+                                arr[3].join(''),
+                                arr[3].join('')
+                              ) >= 2
+                            ) {
+                              removeQuantity(
+                                arr[3].join('') +
+                                  parseInt(
                                     this.getOccurrence(
                                       quantities,
                                       arr[3].join(''),
                                       arr[3].join('')
-                                    ) >= 2
-                                  ) {
-                                    removeQuantity(
-                                      arr[3].join('') +
-                                        parseInt(
-                                          this.getOccurrence(
-                                            quantities,
-                                            arr[3].join(''),
-                                            arr[3].join('')
-                                          ) - 1
-                                        ),
-                                      quantities[quantities.length - 1].charAt(
-                                        quantities[quantities.length - 1]
-                                          .length - 1
-                                      )
-                                    );
-                                  } else {
-                                    if (cart.length >= 2) {
-                                      removeItem(index);
-                                    } else {
-                                      emptyCart();
-                                    }
-                                  }
-                                }}
-                              >
-                                <svg
-                                  width='45'
-                                  height='45'
-                                  viewBox='0 0 45 45'
-                                  fill='none'
-                                  xmlns='http://www.w3.org/2000/svg'
-                                >
-                                  <path
-                                    d='M15 22.5H30'
-                                    stroke='#1D1F22'
-                                    stroke-linecap='round'
-                                    stroke-linejoin='round'
-                                  />
-                                  <rect
-                                    x='0.5'
-                                    y='0.5'
-                                    width='44'
-                                    height='44'
-                                    stroke='#1D1F22'
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-
-                            <ImageSlider
-                              length={item.gallery.length}
-                              imgGallery={item.gallery}
-                              imgAlt={item.name}
-                            />
-                          </div>
-                          <div className='details-section details-section-cart-page'>
-                            <div className='brand-and-name cart-page-brand-and-name'>
-                              <p>{item.brand}</p>
-                              <p>{item.name}</p>
-                            </div>
-
-                            <div className='product-price cart-page-price'>
-                              <p>
-                                {
-                                  item.prices[this.props.currency].currency
-                                    .symbol
-                                }
-                                {item.prices[this.props.currency].amount}
-                              </p>
-                            </div>
-
-                            {item.attributes.map((atr, index) => {
-                              if (atr.name !== 'Color') {
-                                return (
-                                  <div className='attributes-section attributes-section-product-page'>
-                                    <p className='attribute-name'>
-                                      {atr.name}:
-                                    </p>
-                                    <ul className='product-attributes product-attributes-cart-page'>
-                                      {atr.items.map((atr2, index2) => {
-                                        return (
-                                          <li
-                                            className={
-                                              arr[1][0].find((el) => {
-                                                return el.value == atr2.value;
-                                              }) &&
-                                              arr[1][0].find(
-                                                (ind) =>
-                                                  ind.id == `${index}${index2}`
-                                              )
-                                                ? 'attribute-selected'
-                                                : ''
-                                            }
-                                            value={atr2.value}
-                                            data-index={`${index}${index2}`}
-                                          >
-                                            {atr2.value}
-                                          </li>
-                                        );
-                                      })}
-                                    </ul>
-                                  </div>
-                                );
+                                    ) - 1
+                                  ),
+                                quantities[quantities.length - 1].charAt(
+                                  quantities[quantities.length - 1].length - 1
+                                )
+                              );
+                            } else {
+                              if (cart.length >= 2) {
+                                removeItem(index);
                               } else {
-                                return (
-                                  <div className='attributes-section attributes-section-product-page'>
-                                    <p className='attribute-name'>
-                                      {atr.name}:
-                                    </p>
-                                    <ul className='product-color product-color-cart-page'>
-                                      {atr.items.map((atr2, index2) => {
-                                        return (
-                                          <li
-                                            className={
-                                              arr[2][0].find(
-                                                (el) => el.value == atr2.value
-                                              ) &&
-                                              arr[2][0].find(
-                                                (ind) =>
-                                                  ind.id == `${index}${index2}`
-                                              )
-                                                ? 'color-selected'
-                                                : ''
-                                            }
-                                            value={atr2.value}
-                                            data-index={`${index}${index2}`}
-                                          ></li>
-                                        );
-                                      })}
-                                    </ul>
-                                  </div>
-                                );
+                                emptyCart();
                               }
-                            })}
-                          </div>
+                            }
+                          }}
+                        >
+                          <svg
+                            width='45'
+                            height='45'
+                            viewBox='0 0 45 45'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M15 22.5H30'
+                              stroke='#1D1F22'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            />
+                            <rect
+                              x='0.5'
+                              y='0.5'
+                              width='44'
+                              height='44'
+                              stroke='#1D1F22'
+                            />
+                          </svg>
                         </div>
-                      );
-                    }
-                  });
-                }
+                      </div>
+
+                      <ImageSlider
+                        length={item.gallery.length}
+                        imgGallery={item.gallery}
+                        imgAlt={item.name}
+                      />
+                    </div>
+                    <div className='details-section details-section-cart-page'>
+                      <div className='brand-and-name cart-page-brand-and-name'>
+                        <p>{item.brand}</p>
+                        <p>{item.name}</p>
+                      </div>
+
+                      <div className='product-price cart-page-price'>
+                        <p>
+                          {item.prices[this.props.currency].currency.symbol}
+                          {item.prices[this.props.currency].amount}
+                        </p>
+                      </div>
+
+                      {item.attributes.map((atr, index) => {
+                        if (atr.name !== 'Color') {
+                          return (
+                            <div className='attributes-section attributes-section-product-page'>
+                              <p className='attribute-name'>{atr.name}:</p>
+                              <ul className='product-attributes product-attributes-cart-page'>
+                                {atr.items.map((atr2, index2) => {
+                                  return (
+                                    <li
+                                      className={
+                                        arr[1][0].find((el) => {
+                                          return el.value == atr2.value;
+                                        }) &&
+                                        arr[1][0].find(
+                                          (ind) => ind.id == `${index}${index2}`
+                                        )
+                                          ? 'attribute-selected'
+                                          : ''
+                                      }
+                                      value={atr2.value}
+                                      data-index={`${index}${index2}`}
+                                    >
+                                      {atr2.value}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div className='attributes-section attributes-section-product-page'>
+                              <p className='attribute-name'>{atr.name}:</p>
+                              <ul className='product-color product-color-cart-page'>
+                                {atr.items.map((atr2, index2) => {
+                                  return (
+                                    <li
+                                      className={
+                                        arr[2][0].find(
+                                          (el) => el.value == atr2.value
+                                        ) &&
+                                        arr[2][0].find(
+                                          (ind) => ind.id == `${index}${index2}`
+                                        )
+                                          ? 'color-selected'
+                                          : ''
+                                      }
+                                      value={atr2.value}
+                                      data-index={`${index}${index2}`}
+                                    ></li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                          );
+                        }
+                      })}
+                    </div>
+                  </div>
+                );
               });
-            }
+            });
           }}
         </CartConsumer>
 

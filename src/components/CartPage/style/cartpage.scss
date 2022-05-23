@@ -53,6 +53,10 @@
   align-items: center;
 }
 
+.cart-page-quantity svg {
+  cursor: pointer;
+}
+
 .cart-page-quantity p {
   user-select: none;
 }

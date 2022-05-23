@@ -1,35 +1,356 @@
 import React, { Component } from 'react';
+import { CartConsumer } from '../../../../../Context/CartContext';
+import { Link } from 'react-router-dom';
 import './style/cartoverlay.scss';
 
 class CartOverlay extends Component {
-  toggleOverlay() {
-    const overlay = document.querySelector('#overlay');
-    overlay.classList.toggle('overlay');
+  getOccurrence(array, value, wordLength) {
+    var count = 1;
+
+    array.forEach((v) => {
+      return v.slice(0, wordLength.length) == value && count++;
+    });
+    return count;
   }
+
   render() {
     return (
-      <div className='cart-overlay'>
-        <div className='cart-vector'>
-          <svg
-            width='20'
-            height='19'
-            viewBox='0 0 20 19'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              d='M19.5613 3.87359C19.1822 3.41031 18.5924 3.12873 17.9821 3.12873H5.15889L4.75914 1.63901C4.52718 0.773016 3.72769 0.168945 2.80069 0.168945H0.653099C0.295301 0.168945 0 0.450523 0 0.793474C0 1.13562 0.294459 1.418 0.653099 1.418H2.80069C3.11654 1.418 3.39045 1.61936 3.47434 1.92139L6.04306 11.7077C6.27502 12.5737 7.07451 13.1778 8.00152 13.1778H16.4028C17.3289 13.1778 18.1507 12.5737 18.3612 11.7077L19.9405 5.50575C20.0877 4.941 19.9619 4.33693 19.5613 3.87365L19.5613 3.87359ZM18.6566 5.22252L17.0773 11.4245C16.9934 11.7265 16.7195 11.9279 16.4036 11.9279H8.00154C7.68569 11.9279 7.41178 11.7265 7.32789 11.4245L5.49611 4.39756H17.983C18.1936 4.39756 18.4042 4.49824 18.5308 4.65948C18.6567 4.81994 18.7192 5.0213 18.6567 5.22266L18.6566 5.22252Z'
-              fill='#43464E'
-            />
-            <path
-              d='M8.44437 13.9814C7.2443 13.9814 6.25488 14.9276 6.25488 16.0751C6.25488 17.2226 7.24439 18.1688 8.44437 18.1688C9.64445 18.1696 10.6339 17.2234 10.6339 16.0757C10.6339 14.928 9.64436 13.9812 8.44437 13.9812V13.9814ZM8.44437 16.9011C7.9599 16.9011 7.58071 16.5385 7.58071 16.0752C7.58071 15.6119 7.9599 15.2493 8.44437 15.2493C8.92885 15.2493 9.30804 15.6119 9.30804 16.0752C9.30722 16.5188 8.90748 16.9011 8.44437 16.9011Z'
-              fill='#43464E'
-            />
-            <path
-              d='M15.6875 13.9814C14.4875 13.9814 13.498 14.9277 13.498 16.0752C13.498 17.2226 14.4876 18.1689 15.6875 18.1689C16.8875 18.1689 17.877 17.2226 17.877 16.0752C17.8565 14.9284 16.8875 13.9814 15.6875 13.9814ZM15.6875 16.9011C15.2031 16.9011 14.8239 16.5385 14.8239 16.0752C14.8239 15.612 15.2031 15.2493 15.6875 15.2493C16.172 15.2493 16.5512 15.612 16.5512 16.0752C16.5512 16.5188 16.1506 16.9011 15.6875 16.9011Z'
-              fill='#43464E'
-            />
-          </svg>
+      <div>
+        <div className='cart-overlay'>
+          <div id='myCart' className='sidebar'>
+            <div className='cart-overlay-content'>
+              <CartConsumer>
+                {(props) => {
+                  const { cart, quantities } = props;
+
+                  if (cart.length >= 1) {
+                    return (
+                      <div className='bag-quantity'>
+                        <p>My bag,</p>
+                        <p>
+                          {cart.length + quantities.length}{' '}
+                          {cart.length + quantities.length > 1
+                            ? 'items'
+                            : 'item'}
+                        </p>
+                      </div>
+                    );
+                  } else {
+                    return <p>Your bag is empty.</p>;
+                  }
+                }}
+              </CartConsumer>
+
+              <div className='bag-content'>
+                <CartConsumer>
+                  {(props) => {
+                    const {
+                      cart,
+                      addItem,
+                      itemNames,
+                      quantities,
+                      addQuantity,
+
+                      removeQuantity,
+                      removeItem,
+                      emptyCart,
+                    } = props;
+
+                    return cart.map((arr, index) => {
+                      return arr[0].map((item) => {
+                        return (
+                          <div className='cart-page-bag'>
+                            <div className='img-section-cart-page-bag'>
+                              <div className='cart-page-quantity-bag'>
+                                <div
+                                  onClick={() => {
+                                    console.log('Arr1 attributes:', arr[1]);
+                                    addQuantity(
+                                      arr[3].join('') +
+                                        this.getOccurrence(
+                                          quantities,
+                                          arr[3].join(''),
+                                          arr[3].join('')
+                                        )
+                                    );
+                                  }}
+                                >
+                                  <svg
+                                    width='24'
+                                    height='24'
+                                    viewBox='0 0 24 24'
+                                    fill='none'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                  >
+                                    <path
+                                      d='M12 8V16'
+                                      stroke='#1D1F22'
+                                      stroke-linecap='round'
+                                      stroke-linejoin='round'
+                                    />
+                                    <path
+                                      d='M8 12H16'
+                                      stroke='#1D1F22'
+                                      stroke-linecap='round'
+                                      stroke-linejoin='round'
+                                    />
+                                    <rect
+                                      x='0.5'
+                                      y='0.5'
+                                      width='23'
+                                      height='23'
+                                      stroke='#1D1F22'
+                                    />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <p>
+                                    {this.getOccurrence(
+                                      quantities,
+                                      arr[3].join(''),
+                                      arr[3].join('')
+                                    )}
+                                  </p>
+                                </div>
+                                <div
+                                  //removeItem(0);
+                                  onClick={() => {
+                                    if (
+                                      this.getOccurrence(
+                                        quantities,
+                                        arr[3].join(''),
+                                        arr[3].join('')
+                                      ) >= 2
+                                    ) {
+                                      removeQuantity(
+                                        arr[3].join('') +
+                                          parseInt(
+                                            this.getOccurrence(
+                                              quantities,
+                                              arr[3].join(''),
+                                              arr[3].join('')
+                                            ) - 1
+                                          ),
+                                        quantities[
+                                          quantities.length - 1
+                                        ].charAt(
+                                          quantities[quantities.length - 1]
+                                            .length - 1
+                                        )
+                                      );
+                                    } else {
+                                      if (cart.length >= 2) {
+                                        removeItem(index);
+                                      } else {
+                                        emptyCart();
+                                      }
+                                    }
+                                  }}
+                                >
+                                  <svg
+                                    width='24'
+                                    height='24'
+                                    viewBox='0 0 24 24'
+                                    fill='none'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                  >
+                                    <path
+                                      d='M8 12H16'
+                                      stroke='#1D1F22'
+                                      stroke-linecap='round'
+                                      stroke-linejoin='round'
+                                    />
+                                    <rect
+                                      x='0.5'
+                                      y='0.5'
+                                      width='23'
+                                      height='23'
+                                      stroke='#1D1F22'
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                              <div className='bag-img'>
+                                <img
+                                  src={item.gallery[0]}
+                                  alt={item.name}
+                                ></img>
+                              </div>
+                            </div>
+                            <div className='details-section details-section-cart-page-bag'>
+                              <div className='cart-page-brand-and-name-bag'>
+                                <p>{item.brand}</p>
+                                <p>{item.name}</p>
+                              </div>
+
+                              <div className='cart-page-price-bag'>
+                                <p>
+                                  {
+                                    item.prices[this.props.currency].currency
+                                      .symbol
+                                  }
+                                  {item.prices[this.props.currency].amount}
+                                </p>
+                              </div>
+
+                              {item.attributes.map((atr, index) => {
+                                if (atr.name !== 'Color') {
+                                  return (
+                                    <div className='attributes-section-product-page-bag'>
+                                      <p className='attribute-name-bag'>
+                                        {atr.name}:
+                                      </p>
+                                      <ul className='product-attributes-bag'>
+                                        {atr.items.map((atr2, index2) => {
+                                          return (
+                                            <li
+                                              className={
+                                                arr[1][0].find((el) => {
+                                                  return el.value == atr2.value;
+                                                }) &&
+                                                arr[1][0].find(
+                                                  (ind) =>
+                                                    ind.id ==
+                                                    `${index}${index2}`
+                                                )
+                                                  ? 'attribute-selected-bag'
+                                                  : ''
+                                              }
+                                              value={atr2.value}
+                                              data-index={`${index}${index2}`}
+                                            >
+                                              {atr2.value}
+                                            </li>
+                                          );
+                                        })}
+                                      </ul>
+                                    </div>
+                                  );
+                                } else {
+                                  return (
+                                    <div className='attributes-section attributes-section-product-page'>
+                                      <p className='attribute-name-bag'>
+                                        {atr.name}:
+                                      </p>
+                                      <ul className='product-color-bag'>
+                                        {atr.items.map((atr2, index2) => {
+                                          return (
+                                            <li
+                                              className={
+                                                arr[2][0].find(
+                                                  (el) => el.value == atr2.value
+                                                ) &&
+                                                arr[2][0].find(
+                                                  (ind) =>
+                                                    ind.id ==
+                                                    `${index}${index2}`
+                                                )
+                                                  ? 'color-selected-bag'
+                                                  : ''
+                                              }
+                                              value={atr2.value}
+                                              data-index={`${index}${index2}`}
+                                            ></li>
+                                          );
+                                        })}
+                                      </ul>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </div>
+                          </div>
+                        );
+                      });
+                    });
+                  }}
+                </CartConsumer>
+              </div>
+
+              <div className='bag-checkout'>
+                <CartConsumer>
+                  {(props) => {
+                    const { cart, quantities, emptyCart } = props;
+
+                    let s = [];
+
+                    cart.map((arr) => {
+                      return arr[0].map((item) => {
+                        return s.push(
+                          item.prices[this.props.currency].amount *
+                            this.getOccurrence(
+                              quantities,
+                              arr[3].join(''),
+                              arr[3].join('')
+                            )
+                        );
+                      });
+                    });
+
+                    let total = s.reduce((a, b) => a + b, 0);
+                    let tax = (21 / 100) * total;
+
+                    if (cart.length + quantities.length >= 1) {
+                      return (
+                        <div>
+                          <div className='bag-price'>
+                            <p>Total</p>
+                            <p>
+                              {
+                                cart[0][0][0].prices[this.props.currency]
+                                  .currency.symbol
+                              }
+                              {(parseFloat(total) + parseFloat(tax)).toFixed(2)}
+                            </p>
+                          </div>
+                          <div className='bag-checkout-buttons'>
+                            <Link to='/sw-erd-test/cart'>
+                              <button
+                                className='view-bag-button'
+                                onClick={() => {
+                                  document
+                                    .getElementById('myCart')
+                                    .classList.toggle('show-cart');
+                                }}
+                              >
+                                view bag
+                              </button>
+                            </Link>
+
+                            <button
+                              className='checkout-button'
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Pressing 'OK' will empty your bag."
+                                  )
+                                ) {
+                                  emptyCart();
+                                  document
+                                    .getElementById('myCart')
+                                    .classList.toggle('show-cart');
+                                }
+                              }}
+                            >
+                              check out
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }
+                  }}
+                </CartConsumer>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='cart-overlay'>
+          <div id='myCart' className='sidebar'>
+            <div className='cart-overlay-content'>
+              <p className='empty-bag'>Your bag is empty.</p>
+            </div>
+          </div>
         </div>
       </div>
     );

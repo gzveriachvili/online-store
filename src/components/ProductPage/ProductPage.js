@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllProducts } from '../../services/getQueries';
 import './style/productpage.scss';
-import { Link } from 'react-router-dom';
 
 import CartContext from '../Context/CartContext';
 
@@ -271,6 +270,9 @@ class ProductPage extends Component {
                         item.name +
                           this.getSelectedAtr()
                             .map((val) => val.value)
+                            .join('') +
+                          this.getSelectedCol()
+                            .map((val) => val.value)
                             .join('')
                       );
                     } else {
@@ -300,13 +302,7 @@ class ProductPage extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.displayData()}
-
-        <Link to='/sw-erd-test/cart'>Cart</Link>
-      </div>
-    );
+    return <div>{this.displayData()}</div>;
   }
 }
 
