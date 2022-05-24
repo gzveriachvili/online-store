@@ -9,10 +9,6 @@ class ProductPage extends Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
-
-    this.state = {
-      cart: [],
-    };
   }
 
   resetSelection() {
@@ -113,9 +109,6 @@ class ProductPage extends Component {
     var count = 1;
 
     array.forEach((v) => {
-      console.log('WORD LENGTH: ', wordLength);
-      console.log('V CHAR AT 0: ', v.slice(0, 18));
-      console.log('VALUE CHAR AT 0: ', value);
       return v.slice(0, wordLength.length) == value && count++;
     });
     return count;
@@ -151,11 +144,9 @@ class ProductPage extends Component {
 
   static contextType = CartContext;
   displayData() {
-    const { cart, itemNames, addItem, quantities, addQuantity } = this.context;
+    const { itemNames, addItem, quantities, addQuantity } = this.context;
     const data = this.props.data;
     const parse = require('html-react-parser');
-
-    console.log('quantities: ', quantities);
 
     let id = window.location.pathname;
     id = id.split('/');
