@@ -43,6 +43,10 @@
   border-bottom: 3px solid $accent-color;
 }
 
+.header-currency-cart {
+  position: relative;
+}
+
 .header-wrapper .header-currency-cart {
   display: flex;
   align-items: flex-end;

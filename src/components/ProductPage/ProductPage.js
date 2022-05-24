@@ -59,7 +59,7 @@ class ProductPage extends Component {
     allAttributes.forEach((attribute) => {
       attribute = attribute.childNodes;
       for (let i = 0; i <= attribute.length - 1; i++) {
-        attribute[0].classList.add('attribute-selected');
+        //attribute[0].classList.add('attribute-selected');
         attribute[i].addEventListener('click', () => {
           attribute.forEach((option) => {
             option.classList.remove('attribute-selected');
@@ -73,7 +73,7 @@ class ProductPage extends Component {
     //Colors
     let colorAttributes = document.querySelector('.product-color').childNodes;
     for (let i = 0; i <= colorAttributes.length - 1; i++) {
-      colorAttributes[0].classList.add('color-selected');
+      //colorAttributes[0].classList.add('color-selected');
       colorAttributes[i].addEventListener('click', () => {
         colorAttributes.forEach((option) => {
           option.classList.remove('color-selected');
@@ -243,48 +243,70 @@ class ProductPage extends Component {
 
                 <button
                   onClick={() => {
-                    if (
-                      !itemNames.includes(
-                        item.name +
-                          this.getSelectedAtr()
-                            .map((val) => val.value)
-                            .join('')
-                      )
-                    ) {
-                      addItem(
-                        [
-                          [item],
-                          [this.getSelectedAtr()],
-                          [this.getSelectedCol()],
-                          [
-                            item.name +
-                              this.getSelectedAtr()
-                                .map((val) => val.value)
-                                .join('') +
-                              this.getSelectedCol()
-                                .map((val) => val.value)
-                                .join(''),
-                          ],
-                        ],
+                    let allAttributes = document.querySelectorAll(
+                      '.product-attributes'
+                    );
+                    let colorAttributes =
+                      document.querySelectorAll('.product-color');
 
-                        item.name +
-                          this.getSelectedAtr()
-                            .map((val) => val.value)
-                            .join('') +
-                          this.getSelectedCol()
-                            .map((val) => val.value)
-                            .join('')
-                      );
+                    console.log(
+                      'getSelectedCol().length',
+                      this.getSelectedCol().length
+                    );
+                    console.log(
+                      'colorAttributes.length',
+                      colorAttributes.length
+                    );
+
+                    if (
+                      this.getSelectedAtr().length !== allAttributes.length ||
+                      this.getSelectedCol().length !== colorAttributes.length
+                    ) {
+                      alert('Please select product attributes');
                     } else {
-                      addQuantity(
-                        item.name +
-                          this.getSelectedAtr()
-                            .map((val) => val.value)
-                            .join('') +
-                          this.getOccurrence(quantities, item.name, item.name)
-                      );
+                      if (
+                        !itemNames.includes(
+                          item.name +
+                            this.getSelectedAtr()
+                              .map((val) => val.value)
+                              .join('')
+                        )
+                      ) {
+                        addItem(
+                          [
+                            [item],
+                            [this.getSelectedAtr()],
+                            [this.getSelectedCol()],
+                            [
+                              item.name +
+                                this.getSelectedAtr()
+                                  .map((val) => val.value)
+                                  .join('') +
+                                this.getSelectedCol()
+                                  .map((val) => val.value)
+                                  .join(''),
+                            ],
+                          ],
+
+                          item.name +
+                            this.getSelectedAtr()
+                              .map((val) => val.value)
+                              .join('') +
+                            this.getSelectedCol()
+                              .map((val) => val.value)
+                              .join('')
+                        );
+                      } else {
+                        addQuantity(
+                          item.name +
+                            this.getSelectedAtr()
+                              .map((val) => val.value)
+                              .join('') +
+                            this.getOccurrence(quantities, item.name, item.name)
+                        );
+                      }
+                      //this.resetSelection();
                     }
-                    this.resetSelection();
                   }}
                 >
                   add to cart

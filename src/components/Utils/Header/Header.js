@@ -4,6 +4,7 @@ import { graphql } from '@apollo/client/react/hoc';
 import { getAllCategories } from '../../../services/getQueries';
 import './style/header.scss';
 import Dropdown from './utils/Dropdown/Dropdown';
+import Dropdown2 from './utils/Dropdown/Dropdown2';
 import CartOverlay from './utils/Dropdown/CartOverlay/CartOverlay';
 import { CartConsumer } from '../../Context/CartContext';
 
@@ -92,26 +93,55 @@ class Header extends Component {
     }
   }
 
+  displayCurrencySymbols2() {
+    const data = this.props.data;
+
+    if (data.loading) {
+      return ['Loading'];
+    } else {
+      return data.currencies.map((currency) => {
+        const currencyISO = {
+          $: 'USD',
+          '£': 'GBP',
+          A$: 'AUD',
+          '¥': 'YEN',
+          '₽': 'RUB',
+        };
+
+        return currency.symbol + ' ' + currencyISO[currency.symbol];
+      });
+    }
+  }
+
   componentDidMount() {
-    let currencyDropdown = document.querySelector('#currency-dropdown');
-    currencyDropdown.addEventListener('click', () => {
-      switch (currencyDropdown.value) {
-        case 'GBP':
+    let currencyDropdown = document.querySelector('.dropdown-text');
+    let ddItems = document.querySelectorAll('.dropdown-item');
+
+    for (const item of ddItems) {
+      item.addEventListener('click', () => {
+        currencyDropdown.click();
+      });
+    }
+
+    document.addEventListener('click', () => {
+      console.log('dd text: ', currencyDropdown.textContent);
+      switch (currencyDropdown.textContent.charAt(0)) {
+        case '£':
           this.setState({
             currencyKey: 1,
           });
           break;
-        case 'AUD':
+        case 'A':
           this.setState({
             currencyKey: 2,
           });
           break;
-        case 'YEN':
+        case '¥':
           this.setState({
             currencyKey: 3,
           });
           break;
-        case 'RUB':
+        case '₽':
           this.setState({
             currencyKey: 4,
           });
@@ -176,8 +206,9 @@ class Header extends Component {
         </div>
         <div className='header-currency-cart'>
           <div className='currencies'>
-            <Dropdown currencyList={this.displayCurrencySymbols()} />
+            <Dropdown2 currencyList={this.displayCurrencySymbols2()} />
           </div>
+          {/* <Dropdown currencyList={this.displayCurrencySymbols()} /> */}
           <div
             onClick={() => {
               this.openNav();

@@ -60,11 +60,13 @@ export class CartProvider extends Component {
           itemNames,
           sum,
           quantities,
+
           addQuantity,
           removeQuantity,
           removeItem,
           addItem,
           emptyCart,
+
           addSum,
         }}
       >
