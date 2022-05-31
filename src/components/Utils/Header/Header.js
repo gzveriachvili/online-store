@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllCategories } from '../../../services/getQueries';
 import './style/header.scss';
-import Dropdown from './utils/Dropdown/Dropdown';
 import Dropdown2 from './utils/Dropdown/Dropdown2';
 import CartOverlay from './utils/Dropdown/CartOverlay/CartOverlay';
 import { CartConsumer } from '../../Context/CartContext';
@@ -76,7 +75,7 @@ class Header extends Component {
           $: 'USD',
           '£': 'GBP',
           A$: 'AUD',
-          '¥': 'YEN',
+          '¥': 'JPY',
           '₽': 'RUB',
         };
 
@@ -104,7 +103,7 @@ class Header extends Component {
           $: 'USD',
           '£': 'GBP',
           A$: 'AUD',
-          '¥': 'YEN',
+          '¥': 'JPY',
           '₽': 'RUB',
         };
 

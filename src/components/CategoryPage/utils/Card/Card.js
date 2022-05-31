@@ -9,8 +9,8 @@ class Card extends Component {
   }
 
   displayCartButton = () => {
-    let cards = document.querySelectorAll('.product-card');
-    let buttons = document.querySelectorAll('.open-pdp-btn');
+    const cards = document.querySelectorAll('.product-card');
+    const buttons = document.querySelectorAll('.open-pdp-btn');
 
     for (let i = 0; i <= cards.length - 1; i++) {
       if (cards[i].getAttribute('data-instock') === 'true') {
@@ -38,7 +38,7 @@ class Card extends Component {
   };
 
   displayInStock = () => {
-    let cards = document.querySelectorAll('.product-card');
+    const cards = document.querySelectorAll('.product-card');
 
     cards.forEach((card) => {
       if (card.getAttribute('data-instock') === 'false') {
@@ -61,16 +61,23 @@ class Card extends Component {
 
   render() {
     return (
-      <div data-instock={this.props.dataInStock} className='product-card'>
-        <div className='img-text'>
-          <img src={this.props.thumbnail} alt={this.props.productTitle}></img>
-          <div className='title-price'>
-            <h4>{this.props.productTitle}</h4>
-            <p>{this.props.productPrice}</p>
+      <Link to={`/sw-erd-test/product/${this.props.productId}`}>
+        <div data-instock={this.props.dataInStock} className='product-card'>
+          <div className='img-text'>
+            <img src={this.props.thumbnail} alt={this.props.productTitle}></img>
+
+            <div className='title-price'>
+              <h4>{this.props.productTitle}</h4>
+              <p>{this.props.productPrice}</p>
+            </div>
           </div>
-        </div>
-        <Link to={`/sw-erd-test/product/${this.props.productId}`}>
-          <div className='open-pdp-btn'>
+
+          <div
+            className='open-pdp-btn'
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
             <svg
               width='74'
               height='74'
@@ -131,8 +138,8 @@ class Card extends Component {
               </defs>
             </svg>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
     );
   }
 }

@@ -6,14 +6,8 @@ import spinner from './assets/img/spinner.gif';
 import './style/category.scss';
 
 class CategoryPage extends Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   displayData() {
     const data = this.props.data;
-    //const parse = require('html-react-parser');
     if (data.loading) {
       return (
         <div>
@@ -23,16 +17,22 @@ class CategoryPage extends Component {
     } else {
       return data.categories[this.props.category].products.map((item) => {
         return (
-          <Card
-            productId={item.id}
-            dataInStock={item.inStock}
-            thumbnail={item.gallery[0]}
-            productTitle={item.name}
-            productPrice={
-              item.prices[this.props.currency].currency.symbol +
-              item.prices[this.props.currency].amount
-            }
-          />
+          <div
+            onClick={() => {
+              console.log('hi');
+            }}
+          >
+            <Card
+              productId={item.id}
+              dataInStock={item.inStock}
+              thumbnail={item.gallery[0]}
+              productTitle={`${item.brand} ${item.name}`}
+              productPrice={
+                item.prices[this.props.currency].currency.symbol +
+                item.prices[this.props.currency].amount
+              }
+            />
+          </div>
         );
       });
     }
@@ -40,7 +40,6 @@ class CategoryPage extends Component {
 
   displayCategoryName() {
     const data = this.props.data;
-    //const parse = require('html-react-parser');
     if (data.loading) {
       return (
         <div>
@@ -53,7 +52,6 @@ class CategoryPage extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className='category-page'>
         <h2>{this.displayCategoryName()}</h2>

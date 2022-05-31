@@ -16,6 +16,11 @@
   position: relative;
 }
 
+.product-cards-section a {
+  text-decoration: none;
+  color: $main-text-color;
+}
+
 .open-pdp-btn {
   position: absolute;
   bottom: 10%;

@@ -1,35 +1,20 @@
 import React, { Component } from 'react';
-import { graphql } from '@apollo/client/react/hoc';
-import { getAllProducts } from '../../services/getQueries';
+import { Query } from '@apollo/react-components';
+import { productRequest } from '../../services/getQueries';
 import './style/productpage.scss';
 
 import CartContext from '../Context/CartContext';
 
 class ProductPage extends Component {
-  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
+
+    this.state = {
+      productId: '',
+    };
   }
 
-  resetSelection() {
-    let allAttributes = document.querySelectorAll('.product-attributes');
-
-    allAttributes.forEach((attribute) => {
-      attribute = attribute.childNodes;
-      for (let i = 0; i <= attribute.length - 1; i++) {
-        attribute.forEach((option) => {
-          option.classList.remove('attribute-selected');
-        });
-      }
-      attribute[0].classList.add('attribute-selected');
-    });
-
-    let colorAttributes = document.querySelector('.product-color').childNodes;
-
-    for (let i = 0; i <= colorAttributes.length - 1; i++) {
-      colorAttributes[i].classList.remove('color-selected');
-    }
-  }
+  static contextType = CartContext;
 
   changeImage(e) {
     console.log(e.target.src);
@@ -105,16 +90,24 @@ class ProductPage extends Component {
     return arr;
   }
 
-  getOccurrence(array, value, wordLength) {
+  getOccurrence(array, productName) {
     var count = 1;
 
     array.forEach((v) => {
-      return v.slice(0, wordLength.length) == value && count++;
+      return v.slice(0, productName.length) == productName && count++;
     });
     return count;
   }
 
   componentDidMount() {
+    let id = window.location.pathname;
+    id = id.split('/');
+    id = id[id.length - 1];
+
+    this.setState({
+      productId: id,
+    });
+
     try {
       this.convertHexToSwatch();
     } catch (error) {
@@ -142,27 +135,24 @@ class ProductPage extends Component {
     }
   }
 
-  static contextType = CartContext;
-  displayData() {
-    const { itemNames, addItem, quantities, addQuantity } = this.context;
-    const data = this.props.data;
-    const parse = require('html-react-parser');
+  render() {
+    const { productId } = this.state;
+    return (
+      <Query query={productRequest(productId)}>
+        {({ loading, data }) => {
+          if (loading) return <p>Loading...</p>;
 
-    let id = window.location.pathname;
-    id = id.split('/');
-    id = id[id.length - 1];
+          const { product } = data;
 
-    if (data.loading) {
-      return <div>Loading...</div>;
-    } else {
-      // eslint-disable-next-line array-callback-return
-      return data.categories[this.props.category].products.map((item) => {
-        if (item.id === id) {
+          console.log(product);
+          const { itemNames, addItem, quantities, addQuantity } = this.context;
+          const parse = require('html-react-parser');
+
           return (
             <div className='product-info'>
               <div className='img-section'>
                 <div className='img-left'>
-                  {item.gallery.map((img, index) => {
+                  {product.gallery.map((img, index) => {
                     return (
                       <img
                         className={`small-img-${index}`}
@@ -170,23 +160,23 @@ class ProductPage extends Component {
                           this.changeImage(e);
                         }}
                         src={img}
-                        alt={item.name}
+                        alt={product.name}
                       ></img>
                     );
                   })}
                 </div>
 
                 <div className='img-right'>
-                  <img src={item.gallery[0]} alt={item.name}></img>
+                  <img src={product.gallery[0]} alt={product.name}></img>
                 </div>
               </div>
               <div className='details-section'>
                 <div className='brand-and-name'>
-                  <p>{item.brand}</p>
-                  <p>{item.name}</p>
+                  <p>{product.brand}</p>
+                  <p>{product.name}</p>
                 </div>
 
-                {item.attributes.map((atr, index) => {
+                {product.attributes.map((atr, index) => {
                   if (atr.name !== 'Color') {
                     return (
                       <div className='attributes-section'>
@@ -227,8 +217,8 @@ class ProductPage extends Component {
                 <div className='product-price'>
                   <p>Price: </p>
                   <p>
-                    {item.prices[this.props.currency].currency.symbol}
-                    {item.prices[this.props.currency].amount}
+                    {product.prices[this.props.currency].currency.symbol}
+                    {product.prices[this.props.currency].amount}
                   </p>
                 </div>
 
@@ -257,7 +247,7 @@ class ProductPage extends Component {
                     } else {
                       if (
                         !itemNames.includes(
-                          item.name +
+                          product.name +
                             this.getSelectedAtr()
                               .map((val) => val.value)
                               .join('')
@@ -265,11 +255,11 @@ class ProductPage extends Component {
                       ) {
                         addItem(
                           [
-                            [item],
+                            [product],
                             [this.getSelectedAtr()],
                             [this.getSelectedCol()],
                             [
-                              item.name +
+                              product.name +
                                 this.getSelectedAtr()
                                   .map((val) => val.value)
                                   .join('') +
@@ -279,7 +269,7 @@ class ProductPage extends Component {
                             ],
                           ],
 
-                          item.name +
+                          product.name +
                             this.getSelectedAtr()
                               .map((val) => val.value)
                               .join('') +
@@ -289,11 +279,11 @@ class ProductPage extends Component {
                         );
                       } else {
                         addQuantity(
-                          item.name +
+                          product.name +
                             this.getSelectedAtr()
                               .map((val) => val.value)
                               .join('') +
-                            this.getOccurrence(quantities, item.name, item.name)
+                            this.getOccurrence(quantities, product.name)
                         );
                       }
                       //this.resetSelection();
@@ -304,19 +294,15 @@ class ProductPage extends Component {
                 </button>
 
                 <div className='product-description'>
-                  {parse(item.description)}
+                  {parse(product.description)}
                 </div>
               </div>
             </div>
           );
-        }
-      });
-    }
-  }
-
-  render() {
-    return <div>{this.displayData()}</div>;
+        }}
+      </Query>
+    );
   }
 }
 
-export default graphql(getAllProducts)(ProductPage);
+export default ProductPage;

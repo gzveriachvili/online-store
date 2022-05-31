@@ -48,33 +48,33 @@ const getAllCategories = gql`
   }
 `;
 
-const productRequest = (productId) => gql`
-        query {
-          
-          product(id: "${productId}") {
-            name
-            inStock
-            gallery
-            description
-            category
-            attributes {
-              
-              name
-              items {
-                id
-                value
-                displayValue
-              }
-            }
-            prices {
-              amount
-              currency {
-                symbol
-              }
-            }
-            brand
-          }
-        }
-      `;
+const productRequest = (productID) => gql`
+query {
+  
+  product(id: "${productID}") {
+    name
+    inStock
+    gallery
+    description
+    category
+    attributes {
+      
+      name
+      items {
+        id
+        value
+        displayValue
+      }
+    }
+    prices {
+      amount
+      currency {
+        symbol
+      }
+    }
+    brand
+  }
+}
+`;
 
 export { getAllProducts, getAllCategories, productRequest };
