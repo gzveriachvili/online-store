@@ -81,7 +81,7 @@ class CartPage extends Component {
           {(props) => {
             const {
               cart,
-              addItem,
+
               itemNames,
               quantities,
               addQuantity,

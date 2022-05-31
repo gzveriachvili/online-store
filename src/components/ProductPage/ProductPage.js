@@ -40,7 +40,6 @@ class ProductPage extends Component {
     allAttributes.forEach((attribute) => {
       attribute = attribute.childNodes;
       for (let i = 0; i <= attribute.length - 1; i++) {
-        //attribute[0].classList.add('attribute-selected');
         attribute[i].addEventListener('click', () => {
           attribute.forEach((option) => {
             option.classList.remove('attribute-selected');
@@ -110,29 +109,25 @@ class ProductPage extends Component {
 
     try {
       this.convertHexToSwatch();
-    } catch (error) {
-      console.log(error);
-    }
+
+      console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
+    } catch (error) {}
 
     try {
       this.createToggle();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   componentDidUpdate() {
     try {
       this.convertHexToSwatch();
-    } catch (error) {
-      console.log(error);
-    }
+
+      console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
+    } catch (error) {}
 
     try {
       this.createToggle();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   render() {
@@ -143,8 +138,6 @@ class ProductPage extends Component {
           if (loading) return <p>Loading...</p>;
 
           const { product } = data;
-
-          console.log(product);
           const { itemNames, addItem, quantities, addQuantity } = this.context;
           const parse = require('html-react-parser');
 
@@ -155,6 +148,7 @@ class ProductPage extends Component {
                   {product.gallery.map((img, index) => {
                     return (
                       <img
+                        key={product.name + index}
                         className={`small-img-${index}`}
                         onClick={(e) => {
                           this.changeImage(e);
@@ -179,12 +173,13 @@ class ProductPage extends Component {
                 {product.attributes.map((atr, index) => {
                   if (atr.name !== 'Color') {
                     return (
-                      <div className='attributes-section'>
+                      <div key={atr + index} className='attributes-section'>
                         <p className='attribute-name'>{atr.name}:</p>
                         <ul className='product-attributes'>
                           {atr.items.map((atr2, index2) => {
                             return (
                               <li
+                                key={atr2 + index2}
                                 data-index={`${index}${index2}`}
                                 value={atr2.value}
                               >
@@ -197,12 +192,13 @@ class ProductPage extends Component {
                     );
                   } else {
                     return (
-                      <div className='attributes-section'>
+                      <div key={atr + index} className='attributes-section'>
                         <p className='attribute-name'>{atr.name}:</p>
                         <ul className='product-color'>
                           {atr.items.map((atr2, index2) => {
                             return (
                               <li
+                                key={atr2 + index2}
                                 value={atr2.value}
                                 data-index={`${index}${index2}`}
                               ></li>
@@ -222,76 +218,79 @@ class ProductPage extends Component {
                   </p>
                 </div>
 
-                <button
-                  onClick={() => {
-                    let allAttributes = document.querySelectorAll(
-                      '.product-attributes'
-                    );
-                    let colorAttributes =
-                      document.querySelectorAll('.product-color');
+                {product.inStock ? (
+                  <button
+                    onClick={() => {
+                      let allAttributes = document.querySelectorAll(
+                        '.product-attributes'
+                      );
+                      let colorAttributes =
+                        document.querySelectorAll('.product-color');
 
-                    console.log(
-                      'getSelectedCol().length',
-                      this.getSelectedCol().length
-                    );
-                    console.log(
-                      'colorAttributes.length',
-                      colorAttributes.length
-                    );
+                      console.log(
+                        'getSelectedCol().length',
+                        this.getSelectedCol().length
+                      );
+                      console.log(
+                        'colorAttributes.length',
+                        colorAttributes.length
+                      );
 
-                    if (
-                      this.getSelectedAtr().length !== allAttributes.length ||
-                      this.getSelectedCol().length !== colorAttributes.length
-                    ) {
-                      alert('Please select product attributes');
-                    } else {
                       if (
-                        !itemNames.includes(
-                          product.name +
-                            this.getSelectedAtr()
-                              .map((val) => val.value)
-                              .join('')
-                        )
+                        this.getSelectedAtr().length !== allAttributes.length ||
+                        this.getSelectedCol().length !== colorAttributes.length
                       ) {
-                        addItem(
-                          [
-                            [product],
-                            [this.getSelectedAtr()],
-                            [this.getSelectedCol()],
-                            [
-                              product.name +
-                                this.getSelectedAtr()
-                                  .map((val) => val.value)
-                                  .join('') +
-                                this.getSelectedCol()
-                                  .map((val) => val.value)
-                                  .join(''),
-                            ],
-                          ],
-
-                          product.name +
-                            this.getSelectedAtr()
-                              .map((val) => val.value)
-                              .join('') +
-                            this.getSelectedCol()
-                              .map((val) => val.value)
-                              .join('')
-                        );
+                        alert('Please select product attributes');
                       } else {
-                        addQuantity(
-                          product.name +
-                            this.getSelectedAtr()
-                              .map((val) => val.value)
-                              .join('') +
-                            this.getOccurrence(quantities, product.name)
-                        );
+                        if (
+                          !itemNames.includes(
+                            product.name +
+                              this.getSelectedAtr()
+                                .map((val) => val.value)
+                                .join('')
+                          )
+                        ) {
+                          addItem(
+                            [
+                              [product],
+                              [this.getSelectedAtr()],
+                              [this.getSelectedCol()],
+                              [
+                                product.name +
+                                  this.getSelectedAtr()
+                                    .map((val) => val.value)
+                                    .join('') +
+                                  this.getSelectedCol()
+                                    .map((val) => val.value)
+                                    .join(''),
+                              ],
+                            ],
+
+                            product.name +
+                              this.getSelectedAtr()
+                                .map((val) => val.value)
+                                .join('') +
+                              this.getSelectedCol()
+                                .map((val) => val.value)
+                                .join('')
+                          );
+                        } else {
+                          addQuantity(
+                            product.name +
+                              this.getSelectedAtr()
+                                .map((val) => val.value)
+                                .join('') +
+                              this.getOccurrence(quantities, product.name)
+                          );
+                        }
                       }
-                      //this.resetSelection();
-                    }
-                  }}
-                >
-                  add to cart
-                </button>
+                    }}
+                  >
+                    add to cart
+                  </button>
+                ) : (
+                  <button className='out-of-stock'>out of stock</button>
+                )}
 
                 <div className='product-description'>
                   {parse(product.description)}
