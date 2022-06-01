@@ -2,18 +2,32 @@ import React, { Component } from 'react';
 import './style/cartpage.scss';
 import { CartConsumer } from '../Context/CartContext';
 import ImageSlider from './utils/ImageSlider/ImageSlider';
-import { getOccurrence, convertHexToSwatch } from '../Utils/util_functions';
+import { getOccurrence } from '../Utils/util_functions';
 
 class CartPage extends Component {
+  convertAllHexToSwatch() {
+    const productColor = document.querySelectorAll('.product-color');
+    productColor.forEach((child) => {
+      const gChild = child.childNodes;
+      gChild.forEach((col) => {
+        col.style.backgroundColor = col.getAttribute('value');
+
+        if (col.getAttribute('value') === '#FFFFFF') {
+          col.classList.add('color-visibility');
+        }
+      });
+    });
+  }
+
   componentDidMount() {
     try {
-      convertHexToSwatch();
+      this.convertAllHexToSwatch();
     } catch (error) {}
   }
 
   componentDidUpdate() {
     try {
-      convertHexToSwatch();
+      this.convertAllHexToSwatch();
     } catch (error) {}
   }
 
