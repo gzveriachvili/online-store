@@ -3,12 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 import { graphql } from '@apollo/client/react/hoc';
 import { getAllCategories } from '../../../services/getQueries';
 import './style/header.scss';
-import Dropdown2 from './utils/Dropdown/Dropdown2';
+import Dropdown from './utils/Dropdown/Dropdown';
 import CartOverlay from './utils/Dropdown/CartOverlay/CartOverlay';
 import { CartConsumer } from '../../Context/CartContext';
 
 class Header extends Component {
-  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
 
@@ -17,10 +16,10 @@ class Header extends Component {
     };
   }
 
-  convertHexToSwatch() {
-    let productColor = document.querySelectorAll('.product-color-bag');
+  convertHexToSwatchOV() {
+    const productColor = document.querySelectorAll('.product-color-bag');
     productColor.forEach((child) => {
-      let pcNodes = child.childNodes;
+      const pcNodes = child.childNodes;
       pcNodes.forEach((gChild) => {
         gChild.style.backgroundColor = gChild.getAttribute('value');
         if (gChild.getAttribute('value') === '#FFFFFF') {
@@ -32,7 +31,7 @@ class Header extends Component {
 
   openNav() {
     document.getElementById('myCart').classList.toggle('show-cart');
-    this.convertHexToSwatch();
+    this.convertHexToSwatchOV();
   }
 
   closeNav() {
@@ -64,34 +63,6 @@ class Header extends Component {
     }
   }
 
-  displayCurrencySymbols() {
-    const data = this.props.data;
-
-    if (data.loading) {
-      return <div>Loading currency symbols</div>;
-    } else {
-      return data.currencies.map((currency) => {
-        const currencyISO = {
-          $: 'USD',
-          '£': 'GBP',
-          A$: 'AUD',
-          '¥': 'JPY',
-          '₽': 'RUB',
-        };
-
-        return (
-          <option
-            value={currencyISO[currency.symbol]}
-            id={'currency_' + currency.symbol}
-          >
-            {currency.symbol}&nbsp;
-            {currencyISO[currency.symbol]}
-          </option>
-        );
-      });
-    }
-  }
-
   displayCurrencySymbols2() {
     const data = this.props.data;
 
@@ -113,17 +84,9 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    let currencyDropdown = document.querySelector('.dropdown-text');
-    let ddItems = document.querySelectorAll('.dropdown-item');
-
-    for (const item of ddItems) {
-      item.addEventListener('click', () => {
-        currencyDropdown.click();
-      });
-    }
+    const currencyDropdown = document.querySelector('.dropdown-text');
 
     document.addEventListener('click', () => {
-      console.log('dd text: ', currencyDropdown.textContent);
       switch (currencyDropdown.textContent.charAt(0)) {
         case '£':
           this.setState({
@@ -154,7 +117,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.props);
     this.closeNav();
 
     return (
@@ -205,9 +167,8 @@ class Header extends Component {
         </div>
         <div className='header-currency-cart'>
           <div className='currencies'>
-            <Dropdown2 currencyList={this.displayCurrencySymbols2()} />
+            <Dropdown currencyList={this.displayCurrencySymbols2()} />
           </div>
-          {/* <Dropdown currencyList={this.displayCurrencySymbols()} /> */}
           <div
             onClick={() => {
               this.openNav();

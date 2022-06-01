@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom';
 import './style/card.scss';
 
 class Card extends Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   displayCartButton = () => {
     const cards = document.querySelectorAll('.product-card');
     const buttons = document.querySelectorAll('.open-pdp-btn');
@@ -60,15 +55,28 @@ class Card extends Component {
   }
 
   render() {
+    const {
+      item,
+      itemNames,
+      addItem,
+      addQuantity,
+      getOccurrence,
+      quantities,
+      productId,
+      dataInStock,
+      thumbnail,
+      productTitle,
+      productPrice,
+    } = this.props;
     return (
-      <Link to={`/sw-erd-test/product/${this.props.productId}`}>
-        <div data-instock={this.props.dataInStock} className='product-card'>
+      <Link to={`/sw-erd-test/product/${productId}`}>
+        <div data-instock={dataInStock} className='product-card'>
           <div className='img-text'>
-            <img src={this.props.thumbnail} alt={this.props.productTitle}></img>
+            <img src={thumbnail} alt={productTitle}></img>
 
             <div className='title-price'>
-              <h4>{this.props.productTitle}</h4>
-              <p>{this.props.productPrice}</p>
+              <h4>{productTitle}</h4>
+              <p>{productPrice}</p>
             </div>
           </div>
 
@@ -79,6 +87,23 @@ class Card extends Component {
             }}
           >
             <svg
+              onClick={() => {
+                if (item.attributes.length === 0) {
+                  if (!itemNames.includes(item.name)) {
+                    addItem(
+                      [[item], [], [], [item.name]],
+
+                      item.name
+                    );
+                  } else {
+                    addQuantity(
+                      item.name + getOccurrence(quantities, item.name)
+                    );
+                  }
+                } else {
+                  alert('This product has attributes');
+                }
+              }}
               width='74'
               height='74'
               viewBox='0 0 74 74'

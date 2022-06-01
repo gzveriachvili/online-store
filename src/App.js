@@ -8,6 +8,8 @@ import ProductPage from './components/ProductPage/ProductPage';
 import ErrorPage from './components/Utils/ErrorPage/ErrorPage';
 import Header from './components/Utils/Header/Header';
 import CartPage from './components/CartPage/CartPage';
+import { Query } from '@apollo/react-components';
+import { getAllCategories } from './services/getQueries';
 
 class App extends Component {
   constructor(props) {
@@ -19,17 +21,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    let currencyDropdown = document.querySelector('.dropdown-text');
-    let ddItems = document.querySelectorAll('.dropdown-item');
-
-    for (const item of ddItems) {
-      item.addEventListener('click', () => {
-        currencyDropdown.click();
-      });
-    }
+    const currencyDropdown = document.querySelector('.dropdown-text');
 
     document.addEventListener('click', () => {
-      console.log('dd text: ', currencyDropdown.textContent);
       switch (currencyDropdown.textContent.charAt(0)) {
         case '£':
           this.setState({
@@ -60,47 +54,68 @@ class App extends Component {
   }
 
   render() {
+    const { currencyKey } = this.state;
     return (
       <div className='App'>
         <CartProvider>
           <Header />
-          <Routes>
-            <Route
-              path='/sw-erd-test'
-              element={<Navigate to='/sw-erd-test/all' />}
-            />
-            <Route
-              path='/sw-erd-test/all'
-              element={
-                <CategoryPage currency={this.state.currencyKey} category='0' />
-              }
-            />
-            <Route
-              path='/sw-erd-test/clothes'
-              element={
-                <CategoryPage currency={this.state.currencyKey} category='1' />
-              }
-            />
-            <Route
-              path='/sw-erd-test/tech'
-              element={
-                <CategoryPage currency={this.state.currencyKey} category='2' />
-              }
-            />
+          <Query query={getAllCategories}>
+            {({ loading, data }) => {
+              if (loading) {
+                return;
+              } else {
+                const { categories } = data;
+                return (
+                  <Routes>
+                    <Route
+                      path='/sw-erd-test'
+                      element={<Navigate to='/sw-erd-test/all' />}
+                    />
+                    <Route
+                      path={`/sw-erd-test/${categories[0].name}`}
+                      element={
+                        <CategoryPage
+                          currency={currencyKey}
+                          categoryName={categories[0].name}
+                        />
+                      }
+                    />
+                    <Route
+                      path={`/sw-erd-test/${categories[1].name}`}
+                      element={
+                        <CategoryPage
+                          currency={currencyKey}
+                          categoryName={categories[1].name}
+                        />
+                      }
+                    />
+                    <Route
+                      path={`/sw-erd-test/${categories[2].name}`}
+                      element={
+                        <CategoryPage
+                          currency={currencyKey}
+                          categoryName={categories[2].name}
+                        />
+                      }
+                    />
 
-            <Route
-              path='/sw-erd-test/product/:productID'
-              element={
-                <ProductPage category='0' currency={this.state.currencyKey} />
+                    <Route
+                      path='/sw-erd-test/product/:productID'
+                      element={
+                        <ProductPage category='0' currency={currencyKey} />
+                      }
+                    />
+                    <Route
+                      exact
+                      path='/sw-erd-test/cart'
+                      element={<CartPage currency={currencyKey} />}
+                    />
+                    <Route path='*' element={<ErrorPage />} />
+                  </Routes>
+                );
               }
-            />
-            <Route
-              exact
-              path='/sw-erd-test/cart'
-              element={<CartPage currency={this.state.currencyKey} />}
-            />
-            <Route path='*' element={<ErrorPage />} />
-          </Routes>
+            }}
+          </Query>
         </CartProvider>
       </div>
     );

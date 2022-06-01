@@ -30,18 +30,17 @@
 
 .img-left img,
 .img-right img {
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
 }
 
 .img-left img {
-  width: 80px;
+  width: fit-content;
   height: 80px;
   cursor: pointer;
 }
 
 .img-right img {
-  width: 610px;
+  width: fit-content;
   height: 511px;
 }
 
@@ -93,6 +92,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 
   cursor: pointer;
 }

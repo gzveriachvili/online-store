@@ -1,28 +1,77 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import './style/dropdown.scss';
 
-class Dropdown extends Component {
-  // eslint-disable-next-line no-useless-constructor
+export class Dropdown extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isOpen: false,
+      haveText: '',
+    };
+  }
+
+  // Dropdown closes when users click outside the dd list
+  componentDidMount() {
+    const dd = document.querySelector('.dropdown');
+    window.addEventListener('click', (e) => {
+      if (e.target.getAttribute('id') !== 'dd-text') {
+        dd.classList.remove('active-dd');
+      }
+    });
+  }
+
+  componentDidUpdate() {
+    const aud = document.querySelector('#dd-text');
+    if (aud.getAttribute('data-iso') === 'A$') {
+      aud.classList.add('dropdown-text-aud');
+    } else {
+      aud.classList.remove('dropdown-text-aud');
+    }
   }
 
   render() {
-    return (
-      <div className='currency-dropdown-wrapper'>
-        <select id='currency-dropdown'>
-          {/*
-          <option value='' selected disabled hidden>
-            {this.state.value}
-          </option>
-          */}
+    const { isOpen, haveText } = this.state;
 
-          {this.props.currencyList}
-        </select>
-        <span class='focus'></span>
+    return (
+      <div
+        className={isOpen ? 'dropdown active-dd' : 'dropdown'}
+        onClick={this.handleClick}
+      >
+        <div id='dd-text' data-iso={haveText} className='dropdown-text'>
+          {!haveText ? '$' : haveText}
+        </div>
+        {this.itemList(this.props.currencyList)}
       </div>
     );
   }
+
+  handleClick = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  };
+
+  handleText = (e) => {
+    this.setState({
+      haveText: e.currentTarget.textContent.slice(0, 2),
+    });
+  };
+
+  itemList = (props) => {
+    const list = props.map((item) => (
+      <div
+        onClick={this.handleText}
+        className='dropdown-item'
+        key={item.toString()}
+      >
+        {item}
+      </div>
+    ));
+
+    return <div className='dropdown-items'> {list} </div>;
+  };
 }
 
 export default Dropdown;

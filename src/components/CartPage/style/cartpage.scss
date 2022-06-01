@@ -104,6 +104,10 @@
   transition: 0.2s ease;
 }
 
+.img-section-cart-page img {
+  object-fit: contain !important;
+}
+
 .order-section button:hover {
   opacity: 0.9;
 }

@@ -1,64 +1,68 @@
 import React, { Component } from 'react';
-import { graphql } from '@apollo/client/react/hoc';
-import { getAllProducts } from '../../services/getQueries';
+import { categoryRequest } from '../../services/getQueries';
 import Card from './utils/Card/Card';
 import spinner from './assets/img/spinner.gif';
 import './style/category.scss';
+import { Query } from '@apollo/react-components';
+import CartContext from '../Context/CartContext';
+import { getOccurrence } from '../Utils/util_functions';
 
 class CategoryPage extends Component {
-  displayData() {
-    const data = this.props.data;
-    if (data.loading) {
-      return (
-        <div>
-          <img src={spinner} alt='Loading...'></img>
-        </div>
-      );
-    } else {
-      return data.categories[this.props.category].products.map((item) => {
-        return (
-          <div
-            onClick={() => {
-              console.log('hi');
-            }}
-          >
-            <Card
-              productId={item.id}
-              dataInStock={item.inStock}
-              thumbnail={item.gallery[0]}
-              productTitle={`${item.brand} ${item.name}`}
-              productPrice={
-                item.prices[this.props.currency].currency.symbol +
-                item.prices[this.props.currency].amount
-              }
-            />
-          </div>
-        );
-      });
-    }
-  }
-
-  displayCategoryName() {
-    const data = this.props.data;
-    if (data.loading) {
-      return (
-        <div>
-          <img src={spinner} alt='Loading...'></img>
-        </div>
-      );
-    } else {
-      return data.categories[this.props.category].name;
-    }
-  }
+  static contextType = CartContext;
 
   render() {
+    const { categoryName, currency } = this.props;
     return (
       <div className='category-page'>
-        <h2>{this.displayCategoryName()}</h2>
-        <div className='product-cards-section'>{this.displayData()}</div>
+        <Query query={categoryRequest(categoryName)}>
+          {({ loading, data }) => {
+            if (loading) {
+              return (
+                <img className='spinner' src={spinner} alt='Loading...'></img>
+              );
+            } else {
+              const { category } = data;
+              const { itemNames, addItem, quantities, addQuantity } =
+                this.context;
+
+              return (
+                <div className='category-page'>
+                  <h2>{categoryName}</h2>
+                  <div className='product-cards-section'>
+                    {category.products.map((item) => {
+                      return (
+                        <div>
+                          <Card
+                            productId={item.id}
+                            dataInStock={item.inStock}
+                            thumbnail={item.gallery[0]}
+                            productTitle={`${item.brand} ${item.name}`}
+                            productPrice={
+                              item.prices[currency].currency.symbol +
+                              (
+                                Math.round(item.prices[currency].amount * 100) /
+                                100
+                              ).toFixed(2)
+                            }
+                            item={item}
+                            itemNames={itemNames}
+                            addItem={addItem}
+                            quantities={quantities}
+                            addQuantity={addQuantity}
+                            getOccurrence={getOccurrence}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+          }}
+        </Query>
       </div>
     );
   }
 }
 
-export default graphql(getAllProducts)(CategoryPage);
+export default CategoryPage;

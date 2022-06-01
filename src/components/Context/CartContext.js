@@ -8,7 +8,7 @@ export class CartProvider extends Component {
     cart: [],
     itemNames: [],
     quantities: [],
-    currentItem: 'jacket-canada-goosee',
+    currentItem: '',
   };
 
   addItem = (object, itemName) => {
@@ -44,16 +44,6 @@ export class CartProvider extends Component {
     });
   };
 
-  componentDidMount() {
-    let id = window.location.pathname;
-    id = id.split('/');
-    id = id[id.length - 1];
-
-    this.setState({
-      currentItem: id,
-    });
-  }
-
   render() {
     const { cart, itemNames, quantities, sum, currentItem } = this.state;
     const {
@@ -62,6 +52,7 @@ export class CartProvider extends Component {
       addQuantity,
       removeQuantity,
       removeItem,
+
       addSum,
     } = this;
     return (

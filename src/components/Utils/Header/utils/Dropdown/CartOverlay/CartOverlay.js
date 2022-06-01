@@ -2,17 +2,9 @@ import React, { Component } from 'react';
 import { CartConsumer } from '../../../../../Context/CartContext';
 import { Link } from 'react-router-dom';
 import './style/cartoverlay.scss';
+import { getOccurrence } from '../../../../util_functions';
 
 class CartOverlay extends Component {
-  getOccurrence(array, value, wordLength) {
-    var count = 1;
-
-    array.forEach((v) => {
-      return v.slice(0, wordLength.length) == value && count++;
-    });
-    return count;
-  }
-
   render() {
     return (
       <div>
@@ -46,11 +38,8 @@ class CartOverlay extends Component {
                   {(props) => {
                     const {
                       cart,
-                      addItem,
-                      itemNames,
                       quantities,
                       addQuantity,
-
                       removeQuantity,
                       removeItem,
                       emptyCart,
@@ -64,10 +53,9 @@ class CartOverlay extends Component {
                               <div className='cart-page-quantity-bag'>
                                 <div
                                   onClick={() => {
-                                    console.log('Arr1 attributes:', arr[1]);
                                     addQuantity(
                                       arr[3].join('') +
-                                        this.getOccurrence(
+                                        getOccurrence(
                                           quantities,
                                           arr[3].join(''),
                                           arr[3].join('')
@@ -105,7 +93,7 @@ class CartOverlay extends Component {
                                 </div>
                                 <div>
                                   <p>
-                                    {this.getOccurrence(
+                                    {getOccurrence(
                                       quantities,
                                       arr[3].join(''),
                                       arr[3].join('')
@@ -116,7 +104,7 @@ class CartOverlay extends Component {
                                   //removeItem(0);
                                   onClick={() => {
                                     if (
-                                      this.getOccurrence(
+                                      getOccurrence(
                                         quantities,
                                         arr[3].join(''),
                                         arr[3].join('')
@@ -125,7 +113,7 @@ class CartOverlay extends Component {
                                       removeQuantity(
                                         arr[3].join('') +
                                           parseInt(
-                                            this.getOccurrence(
+                                            getOccurrence(
                                               quantities,
                                               arr[3].join(''),
                                               arr[3].join('')
@@ -278,7 +266,7 @@ class CartOverlay extends Component {
                       return arr[0].map((item) => {
                         return s.push(
                           item.prices[this.props.currency].amount *
-                            this.getOccurrence(
+                            getOccurrence(
                               quantities,
                               arr[3].join(''),
                               arr[3].join('')

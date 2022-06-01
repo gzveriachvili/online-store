@@ -2,78 +2,23 @@ import React, { Component } from 'react';
 import './style/cartpage.scss';
 import { CartConsumer } from '../Context/CartContext';
 import ImageSlider from './utils/ImageSlider/ImageSlider';
+import { getOccurrence, convertHexToSwatch } from '../Utils/util_functions';
 
 class CartPage extends Component {
-  // eslint-disable-next-line no-useless-constructor
-
-  convertHexToSwatch() {
-    let productColor = document.querySelectorAll('.product-color');
-    productColor.forEach((child) => {
-      let pcNodes = child.childNodes;
-      pcNodes.forEach((gChild) => {
-        gChild.style.backgroundColor = gChild.getAttribute('value');
-        if (gChild.getAttribute('value') === '#FFFFFF') {
-          gChild.classList.add('color-visibility');
-        }
-      });
-    });
-  }
-
-  getSelectedAtr() {
-    let selectedAtr = document.querySelectorAll('.attribute-selected');
-    let arr = [];
-    selectedAtr.forEach((child) => {
-      arr.push({
-        value: child.getAttribute('value'),
-        id: child.getAttribute('data-index'),
-      });
-    });
-
-    return arr;
-  }
-
-  getSelectedCol() {
-    let selectedCol = document.querySelectorAll('.color-selected');
-    let arr = [];
-    selectedCol.forEach((child) => {
-      arr.push({
-        value: child.getAttribute('value'),
-        id: child.getAttribute('data-index'),
-      });
-    });
-
-    return arr;
-  }
-
-  getOccurrence(array, value, wordLength) {
-    var count = 1;
-
-    array.forEach((v) => {
-      console.log('WORD LENGTH: ', wordLength);
-      console.log('V CHAR AT 0: ', v.slice(0, 18));
-      console.log('VALUE CHAR AT 0: ', value);
-      return v.slice(0, wordLength.length) == value && count++;
-    });
-    return count;
-  }
-
   componentDidMount() {
     try {
-      this.convertHexToSwatch();
-    } catch (error) {
-      console.log(error);
-    }
+      convertHexToSwatch();
+    } catch (error) {}
   }
 
   componentDidUpdate() {
     try {
-      this.convertHexToSwatch();
-    } catch (error) {
-      console.log(error);
-    }
+      convertHexToSwatch();
+    } catch (error) {}
   }
 
   render() {
+    const { currency } = this.props;
     return (
       <div className='cart'>
         <h1>Cart</h1>
@@ -81,19 +26,12 @@ class CartPage extends Component {
           {(props) => {
             const {
               cart,
-
-              itemNames,
               quantities,
               addQuantity,
-
               removeQuantity,
               removeItem,
               emptyCart,
             } = props;
-
-            console.log('CART CONTENT: ', cart);
-            console.log('ITEM CONTENT: ', itemNames);
-            console.log('QUANTITIES: ', quantities);
 
             return cart.map((arr, index) => {
               return arr[0].map((item) => {
@@ -103,10 +41,9 @@ class CartPage extends Component {
                       <div className='cart-page-quantity'>
                         <div
                           onClick={() => {
-                            console.log('Arr1 attributes:', arr[1]);
                             addQuantity(
                               arr[3].join('') +
-                                this.getOccurrence(
+                                getOccurrence(
                                   quantities,
                                   arr[3].join(''),
                                   arr[3].join('')
@@ -144,7 +81,7 @@ class CartPage extends Component {
                         </div>
                         <div>
                           <p>
-                            {this.getOccurrence(
+                            {getOccurrence(
                               quantities,
                               arr[3].join(''),
                               arr[3].join('')
@@ -152,10 +89,9 @@ class CartPage extends Component {
                           </p>
                         </div>
                         <div
-                          //removeItem(0);
                           onClick={() => {
                             if (
-                              this.getOccurrence(
+                              getOccurrence(
                                 quantities,
                                 arr[3].join(''),
                                 arr[3].join('')
@@ -164,7 +100,7 @@ class CartPage extends Component {
                               removeQuantity(
                                 arr[3].join('') +
                                   parseInt(
-                                    this.getOccurrence(
+                                    getOccurrence(
                                       quantities,
                                       arr[3].join(''),
                                       arr[3].join('')
@@ -221,8 +157,8 @@ class CartPage extends Component {
 
                       <div className='product-price cart-page-price'>
                         <p>
-                          {item.prices[this.props.currency].currency.symbol}
-                          {item.prices[this.props.currency].amount}
+                          {item.prices[currency].currency.symbol}
+                          {item.prices[currency].amount}
                         </p>
                       </div>
 
@@ -299,12 +235,8 @@ class CartPage extends Component {
             cart.map((arr) => {
               return arr[0].map((item) => {
                 return s.push(
-                  item.prices[this.props.currency].amount *
-                    this.getOccurrence(
-                      quantities,
-                      arr[3].join(''),
-                      arr[3].join('')
-                    )
+                  item.prices[currency].amount *
+                    getOccurrence(quantities, arr[3].join(''), arr[3].join(''))
                 );
               });
             });
@@ -321,24 +253,16 @@ class CartPage extends Component {
                     <p>Total:</p>
                   </div>
                   <div className='order-col-2'>
-                    {console.log(
-                      'symbol: ',
-                      cart[0][0][0].prices[this.props.currency].currency.symbol
-                    )}
                     <p>
-                      {
-                        cart[0][0][0].prices[this.props.currency].currency
-                          .symbol
-                      }
-                      {tax.toFixed(2)}
+                      {cart[0][0][0].prices[currency].currency.symbol}
+
+                      {(Math.round(tax * 100) / 100).toFixed(2)}
                     </p>
                     <p>{cart.length + quantities.length}</p>
                     <p id='sum'>
-                      {
-                        cart[0][0][0].prices[this.props.currency].currency
-                          .symbol
-                      }
-                      {(parseFloat(total) + parseFloat(tax)).toFixed(2)}
+                      {cart[0][0][0].prices[currency].currency.symbol}
+
+                      {(Math.round((total + tax) * 100) / 100).toFixed(2)}
                     </p>
                   </div>
                 </div>

@@ -4,6 +4,12 @@ import { productRequest } from '../../services/getQueries';
 import './style/productpage.scss';
 
 import CartContext from '../Context/CartContext';
+import {
+  getOccurrence,
+  convertHexToSwatch,
+  getSelectedAtr,
+  getSelectedCol,
+} from '../Utils/util_functions';
 
 class ProductPage extends Component {
   constructor(props) {
@@ -17,25 +23,12 @@ class ProductPage extends Component {
   static contextType = CartContext;
 
   changeImage(e) {
-    console.log(e.target.src);
-    let imgRight = document.querySelector('.img-right').firstChild;
-
+    const imgRight = document.querySelector('.img-right').firstChild;
     imgRight.src = e.target.src;
   }
 
-  convertHexToSwatch() {
-    let productColor = document.querySelector('.product-color').childNodes;
-    productColor.forEach((child) => {
-      child.style.backgroundColor = child.getAttribute('value');
-      if (child.getAttribute('value') === '#FFFFFF') {
-        child.classList.add('color-visibility');
-      }
-    });
-  }
-
   createToggle() {
-    //Attributes
-    let allAttributes = document.querySelectorAll('.product-attributes');
+    const allAttributes = document.querySelectorAll('.product-attributes');
 
     allAttributes.forEach((attribute) => {
       attribute = attribute.childNodes;
@@ -50,10 +43,8 @@ class ProductPage extends Component {
       }
     });
 
-    //Colors
-    let colorAttributes = document.querySelector('.product-color').childNodes;
+    const colorAttributes = document.querySelector('.product-color').childNodes;
     for (let i = 0; i <= colorAttributes.length - 1; i++) {
-      //colorAttributes[0].classList.add('color-selected');
       colorAttributes[i].addEventListener('click', () => {
         colorAttributes.forEach((option) => {
           option.classList.remove('color-selected');
@@ -61,41 +52,6 @@ class ProductPage extends Component {
         colorAttributes[i].classList.add('color-selected');
       });
     }
-  }
-
-  getSelectedAtr() {
-    let selectedAtr = document.querySelectorAll('.attribute-selected');
-    let arr = [];
-    selectedAtr.forEach((child) => {
-      arr.push({
-        value: child.getAttribute('value'),
-        id: child.getAttribute('data-index'),
-      });
-    });
-
-    return arr;
-  }
-
-  getSelectedCol() {
-    let selectedCol = document.querySelectorAll('.color-selected');
-    let arr = [];
-    selectedCol.forEach((child) => {
-      arr.push({
-        value: child.getAttribute('value'),
-        id: child.getAttribute('data-index'),
-      });
-    });
-
-    return arr;
-  }
-
-  getOccurrence(array, productName) {
-    var count = 1;
-
-    array.forEach((v) => {
-      return v.slice(0, productName.length) == productName && count++;
-    });
-    return count;
   }
 
   componentDidMount() {
@@ -106,23 +62,11 @@ class ProductPage extends Component {
     this.setState({
       productId: id,
     });
-
-    try {
-      this.convertHexToSwatch();
-
-      console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
-    } catch (error) {}
-
-    try {
-      this.createToggle();
-    } catch (error) {}
   }
 
   componentDidUpdate() {
     try {
-      this.convertHexToSwatch();
-
-      console.log('HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
+      convertHexToSwatch();
     } catch (error) {}
 
     try {
@@ -132,172 +76,187 @@ class ProductPage extends Component {
 
   render() {
     const { productId } = this.state;
+    const { currency } = this.props;
     return (
       <Query query={productRequest(productId)}>
         {({ loading, data }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) {
+            return <p>Loading...</p>;
+          } else {
+            const { product } = data;
+            const { itemNames, addItem, quantities, addQuantity } =
+              this.context;
 
-          const { product } = data;
-          const { itemNames, addItem, quantities, addQuantity } = this.context;
-          const parse = require('html-react-parser');
+            const parse = require('html-react-parser');
 
-          return (
-            <div className='product-info'>
-              <div className='img-section'>
-                <div className='img-left'>
-                  {product.gallery.map((img, index) => {
-                    return (
-                      <img
-                        key={product.name + index}
-                        className={`small-img-${index}`}
-                        onClick={(e) => {
-                          this.changeImage(e);
-                        }}
-                        src={img}
-                        alt={product.name}
-                      ></img>
-                    );
-                  })}
-                </div>
+            return (
+              <div className='product-page'>
+                <div
+                  onLoad={() => {
+                    this.createToggle();
+                    convertHexToSwatch();
+                  }}
+                  on
+                  className='product-info'
+                >
+                  <div className='img-section'>
+                    <div className='img-left'>
+                      {product.gallery.map((img, index) => {
+                        return (
+                          <img
+                            key={product.name + index}
+                            className={`small-img-${index}`}
+                            onClick={(e) => {
+                              this.changeImage(e);
+                            }}
+                            src={img}
+                            alt={product.name}
+                          ></img>
+                        );
+                      })}
+                    </div>
 
-                <div className='img-right'>
-                  <img src={product.gallery[0]} alt={product.name}></img>
-                </div>
-              </div>
-              <div className='details-section'>
-                <div className='brand-and-name'>
-                  <p>{product.brand}</p>
-                  <p>{product.name}</p>
-                </div>
+                    <div className='img-right'>
+                      <img src={product.gallery[0]} alt={product.name}></img>
+                    </div>
+                  </div>
+                  <div className='details-section'>
+                    <div className='brand-and-name'>
+                      <p>{product.brand}</p>
+                      <p>{product.name}</p>
+                    </div>
 
-                {product.attributes.map((atr, index) => {
-                  if (atr.name !== 'Color') {
-                    return (
-                      <div key={atr + index} className='attributes-section'>
-                        <p className='attribute-name'>{atr.name}:</p>
-                        <ul className='product-attributes'>
-                          {atr.items.map((atr2, index2) => {
-                            return (
-                              <li
-                                key={atr2 + index2}
-                                data-index={`${index}${index2}`}
-                                value={atr2.value}
-                              >
-                                {atr2.value}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div key={atr + index} className='attributes-section'>
-                        <p className='attribute-name'>{atr.name}:</p>
-                        <ul className='product-color'>
-                          {atr.items.map((atr2, index2) => {
-                            return (
-                              <li
-                                key={atr2 + index2}
-                                value={atr2.value}
-                                data-index={`${index}${index2}`}
-                              ></li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    );
-                  }
-                })}
-
-                <div className='product-price'>
-                  <p>Price: </p>
-                  <p>
-                    {product.prices[this.props.currency].currency.symbol}
-                    {product.prices[this.props.currency].amount}
-                  </p>
-                </div>
-
-                {product.inStock ? (
-                  <button
-                    onClick={() => {
-                      let allAttributes = document.querySelectorAll(
-                        '.product-attributes'
-                      );
-                      let colorAttributes =
-                        document.querySelectorAll('.product-color');
-
-                      console.log(
-                        'getSelectedCol().length',
-                        this.getSelectedCol().length
-                      );
-                      console.log(
-                        'colorAttributes.length',
-                        colorAttributes.length
-                      );
-
-                      if (
-                        this.getSelectedAtr().length !== allAttributes.length ||
-                        this.getSelectedCol().length !== colorAttributes.length
-                      ) {
-                        alert('Please select product attributes');
+                    {product.attributes.map((atr, index) => {
+                      if (atr.name !== 'Color') {
+                        return (
+                          <div key={atr + index} className='attributes-section'>
+                            <p className='attribute-name'>{atr.name}:</p>
+                            <ul className='product-attributes'>
+                              {atr.items.map((atr2, index2) => {
+                                return (
+                                  <li
+                                    key={atr2 + index2}
+                                    data-index={`${index}${index2}`}
+                                    value={atr2.value}
+                                  >
+                                    {atr2.value}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        );
                       } else {
-                        if (
-                          !itemNames.includes(
-                            product.name +
-                              this.getSelectedAtr()
-                                .map((val) => val.value)
-                                .join('')
-                          )
-                        ) {
-                          addItem(
-                            [
-                              [product],
-                              [this.getSelectedAtr()],
-                              [this.getSelectedCol()],
-                              [
+                        return (
+                          <div key={atr + index} className='attributes-section'>
+                            <p className='attribute-name'>{atr.name}:</p>
+                            <ul className='product-color'>
+                              {atr.items.map((atr2, index2) => {
+                                return (
+                                  <li
+                                    key={atr2 + index2}
+                                    value={atr2.value}
+                                    data-index={`${index}${index2}`}
+                                  ></li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        );
+                      }
+                    })}
+
+                    <div className='product-price'>
+                      <p>Price: </p>
+                      <p>
+                        {product.prices[currency].currency.symbol}
+
+                        {(
+                          Math.round(product.prices[currency].amount * 100) /
+                          100
+                        ).toFixed(2)}
+                      </p>
+                    </div>
+
+                    {product.inStock ? (
+                      <button
+                        onClick={() => {
+                          let allAttributes = document.querySelectorAll(
+                            '.product-attributes'
+                          );
+                          let colorAttributes =
+                            document.querySelectorAll('.product-color');
+
+                          if (
+                            getSelectedAtr().length !== allAttributes.length ||
+                            getSelectedCol().length !== colorAttributes.length
+                          ) {
+                            alert('Please select product attributes');
+                          } else {
+                            if (
+                              !itemNames.includes(
                                 product.name +
-                                  this.getSelectedAtr()
+                                  getSelectedAtr()
                                     .map((val) => val.value)
                                     .join('') +
-                                  this.getSelectedCol()
+                                  getSelectedCol()
                                     .map((val) => val.value)
-                                    .join(''),
-                              ],
-                            ],
+                                    .join('')
+                              )
+                            ) {
+                              addItem(
+                                [
+                                  [product],
+                                  [getSelectedAtr()],
+                                  [getSelectedCol()],
+                                  [
+                                    product.name +
+                                      getSelectedAtr()
+                                        .map((val) => val.value)
+                                        .join('') +
+                                      getSelectedCol()
+                                        .map((val) => val.value)
+                                        .join(''),
+                                  ],
+                                ],
 
-                            product.name +
-                              this.getSelectedAtr()
-                                .map((val) => val.value)
-                                .join('') +
-                              this.getSelectedCol()
-                                .map((val) => val.value)
-                                .join('')
-                          );
-                        } else {
-                          addQuantity(
-                            product.name +
-                              this.getSelectedAtr()
-                                .map((val) => val.value)
-                                .join('') +
-                              this.getOccurrence(quantities, product.name)
-                          );
-                        }
-                      }
-                    }}
-                  >
-                    add to cart
-                  </button>
-                ) : (
-                  <button className='out-of-stock'>out of stock</button>
-                )}
+                                product.name +
+                                  getSelectedAtr()
+                                    .map((val) => val.value)
+                                    .join('') +
+                                  getSelectedCol()
+                                    .map((val) => val.value)
+                                    .join('')
+                              );
+                            } else {
+                              addQuantity(
+                                product.name +
+                                  getSelectedAtr()
+                                    .map((val) => val.value)
+                                    .join('') +
+                                  getSelectedCol()
+                                    .map((val) => val.value)
+                                    .join('') +
+                                  getOccurrence(quantities, product.name)
+                              );
+                            }
+                          }
+                        }}
+                      >
+                        add to cart
+                      </button>
+                    ) : (
+                      <button className='out-of-stock'>out of stock</button>
+                    )}
 
-                <div className='product-description'>
-                  {parse(product.description)}
+                    <div className='product-description'>
+                      {parse(product.description)}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
+            );
+          }
         }}
       </Query>
     );
