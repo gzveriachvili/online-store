@@ -40,8 +40,7 @@ class CategoryPage extends Component {
                             productPrice={
                               item.prices[currency].currency.symbol +
                               (
-                                Math.round(item.prices[currency].amount * 100) /
-                                100
+                                item.prices[currency].amount
                               ).toFixed(2)
                             }
                             item={item}

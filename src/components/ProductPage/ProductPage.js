@@ -62,17 +62,19 @@ class ProductPage extends Component {
     this.setState({
       productId: id,
     });
+
+
   }
 
-  componentDidUpdate() {
-    try {
-      convertHexToSwatch();
-    } catch (error) {}
+  // componentDidUpdate() {
+  //   try {
+  //     convertHexToSwatch();
+  //   } catch (error) {}
 
-    try {
-      this.createToggle();
-    } catch (error) {}
-  }
+  //   try {
+  //     this.createToggle();
+  //   } catch (error) {}
+  // }
 
   render() {
     const { productId } = this.state;

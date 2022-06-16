@@ -90,12 +90,16 @@ class Card extends Component {
               onClick={() => {
                 if (item.attributes.length === 0) {
                   if (!itemNames.includes(item.name)) {
+                    console.log('ITEM:', item);
+                    console.log('ITEM NAME: ', item.name);
                     addItem(
                       [[item], [], [], [item.name]],
 
                       item.name
                     );
                   } else {
+
+                    console.log('ADD QUANTITY: ', item.name + getOccurrence(quantities, item.name));
                     addQuantity(
                       item.name + getOccurrence(quantities, item.name)
                     );
