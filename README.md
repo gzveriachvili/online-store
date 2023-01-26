@@ -1,6 +1,4 @@
-# Scandiweb Junior React Developer Test
-
-The solution to the task can be viewed [here](https://gzveriachvili.github.io/sw-erd-test/)
+# Online store based on React and GraphQL
 
 The GraphQL endpoint can be found [here](https://github.com/scandiweb/junior-react-endpoint)
 
